@@ -1,0 +1,70 @@
+!_TAG_FILE_FORMAT	2	/extended format; --format=1 will not append ;" to lines/
+!_TAG_FILE_SORTED	1	/0=unsorted, 1=sorted, 2=foldcase/
+!_TAG_OUTPUT_MODE	u-ctags	/u-ctags or e-ctags/
+!_TAG_PROGRAM_AUTHOR	Universal Ctags Team	//
+!_TAG_PROGRAM_NAME	Universal Ctags	/Derived from Exuberant Ctags/
+!_TAG_PROGRAM_URL	https://ctags.io/	/official site/
+!_TAG_PROGRAM_VERSION	0.0.0	/3fdf28bc/
+CParseContext	CParseContext.java	/^	public CParseContext(IOContext ioCtx,  CTokenizer tknz) {$/;"	m	class:CParseContext
+CParseContext	CParseContext.java	/^public class CParseContext extends ParseContext {$/;"	c
+CParseRule	CParseRule.java	/^public abstract class CParseRule extends ParseRule<CParseContext> implements lang.Compiler<CPars/;"	c
+CToken	CToken.java	/^	public CToken(int type, int lineNo, int colNo, String s) {$/;"	m	class:CToken
+CToken	CToken.java	/^public class CToken extends SimpleToken {$/;"	c
+CTokenRule	CTokenRule.java	/^	public CTokenRule() {$/;"	m	class:CTokenRule
+CTokenRule	CTokenRule.java	/^public class CTokenRule extends HashMap<String, Object> {$/;"	c
+CTokenizer	CTokenizer.java	/^    public CTokenizer(CTokenRule rule) {$/;"	m	class:CTokenizer
+CTokenizer	CTokenizer.java	/^public class CTokenizer extends Tokenizer<CToken, CParseContext> {$/;"	c
+CType	CType.java	/^	private CType(int type, String s) {$/;"	m	class:CType	file:
+CType	CType.java	/^public class CType {$/;"	c
+MiniCompiler	MiniCompiler.java	/^public class MiniCompiler {$/;"	c
+TK_PLUS	CToken.java	/^	public static final int TK_PLUS			= 2;				\/\/ +$/;"	f	class:CToken
+T_err	CType.java	/^	public static final int T_err		= 0;		\/\/ 型エラー$/;"	f	class:CType
+T_int	CType.java	/^	public static final int T_int		= 1;		\/\/ int$/;"	f	class:CType
+T_pint	CType.java	/^	public static final int T_pint		= 2;		\/\/ int*$/;"	f	class:CType
+TestCToken	TestCToken.java	/^public class TestCToken {$/;"	c
+TestTokenizer	TestCToken.java	/^		public TestTokenizer(CParseContext pcx) {}$/;"	m	class:TestCToken.TestTokenizer
+TestTokenizer	TestCToken.java	/^	private static class TestTokenizer extends CParseRule {$/;"	c	class:TestCToken
+backCh	CTokenizer.java	/^    private char		backCh;$/;"	f	class:CTokenizer	file:
+backChExist	CTokenizer.java	/^    private boolean		backChExist = false;$/;"	f	class:CTokenizer	file:
+backChar	CTokenizer.java	/^    private void backChar(char c) {$/;"	m	class:CTokenizer	file:
+codeGen	TestCToken.java	/^		public void codeGen(CParseContext pcx) throws FatalErrorException {$/;"	m	class:TestCToken.TestTokenizer
+colNo	CTokenizer.java	/^    private int			lineNo, colNo;$/;"	f	class:CTokenizer	file:
+ctype	CParseRule.java	/^	private CType ctype;$/;"	f	class:CParseRule	file:
+currentTk	CTokenizer.java	/^    private CToken currentTk = null;$/;"	f	class:CTokenizer	file:
+err	CTokenizer.java	/^    private PrintStream err;$/;"	f	class:CTokenizer	file:
+getCType	CParseRule.java	/^	public CType getCType()				{ return ctype; }$/;"	m	class:CParseRule
+getCType	CType.java	/^	public static CType getCType(int type) {$/;"	m	class:CType
+getCurrentToken	CTokenizer.java	/^    public CToken getCurrentToken(CParseContext pctx) {$/;"	m	class:CTokenizer
+getNextToken	CTokenizer.java	/^    public CToken getNextToken(CParseContext pctx) {$/;"	m	class:CTokenizer
+getSeqId	CParseContext.java	/^	public int getSeqId() { return ++seqNo; }$/;"	m	class:CParseContext
+getTokenizer	CParseContext.java	/^	public CTokenizer getTokenizer()		{ return (CTokenizer) super.getTokenizer(); }$/;"	m	class:CParseContext
+getType	CType.java	/^	public int getType()			{ return type; }$/;"	m	class:CType
+in	CTokenizer.java	/^    private InputStream in;$/;"	f	class:CTokenizer	file:
+isCType	CType.java	/^	public boolean isCType(int t)	{ return t == type; }$/;"	m	class:CType
+isConstant	CParseRule.java	/^	private boolean isConstant;$/;"	f	class:CParseRule	file:
+isConstant	CParseRule.java	/^	public boolean isConstant()					{ return isConstant; }$/;"	m	class:CParseRule
+isFirst	TestCToken.java	/^		public static boolean isFirst(CToken tk) { return true; }$/;"	m	class:TestCToken.TestTokenizer
+lang.c	CParseContext.java	/^package lang.c;$/;"	p
+lang.c	CParseRule.java	/^package lang.c;$/;"	p
+lang.c	CToken.java	/^package lang.c;$/;"	p
+lang.c	CTokenRule.java	/^package lang.c;$/;"	p
+lang.c	CTokenizer.java	/^package lang.c;$/;"	p
+lang.c	CType.java	/^package lang.c;$/;"	p
+lang.c	MiniCompiler.java	/^package lang.c;$/;"	p
+lang.c	TestCToken.java	/^package lang.c;$/;"	p
+lineNo	CTokenizer.java	/^    private int			lineNo, colNo;$/;"	f	class:CTokenizer	file:
+main	MiniCompiler.java	/^	public static void main(String[] args) {$/;"	m	class:MiniCompiler
+main	TestCToken.java	/^	public static void main(String[] args) {$/;"	m	class:TestCToken
+parse	TestCToken.java	/^		public void parse(CParseContext ctx) {$/;"	m	class:TestCToken.TestTokenizer
+readChar	CTokenizer.java	/^    private char readChar() {$/;"	m	class:CTokenizer	file:
+readToken	CTokenizer.java	/^    private CToken readToken() {$/;"	m	class:CTokenizer	file:
+rule	CTokenizer.java	/^    private CTokenRule	rule;$/;"	f	class:CTokenizer	file:
+semanticCheck	TestCToken.java	/^		public void semanticCheck(CParseContext pcx) throws FatalErrorException {$/;"	m	class:TestCToken.TestTokenizer
+seqNo	CParseContext.java	/^	private int seqNo = 0;$/;"	f	class:CParseContext	file:
+serialVersionUID	CTokenRule.java	/^	private static final long serialVersionUID = 1139476411716798082L;$/;"	f	class:CTokenRule	file:
+setCType	CParseRule.java	/^	public void setCType(CType ctype)	{ this.ctype = ctype; }$/;"	m	class:CParseRule
+setConstant	CParseRule.java	/^	public void setConstant(boolean isConstant)	{ this.isConstant = isConstant; }$/;"	m	class:CParseRule
+string	CType.java	/^	private String string;$/;"	f	class:CType	file:
+toString	CType.java	/^	public String toString()		{ return string; }$/;"	m	class:CType
+type	CType.java	/^	private int type;$/;"	f	class:CType	file:
+typeArray	CType.java	/^	private static CType[] typeArray = {$/;"	f	class:CType	file:
