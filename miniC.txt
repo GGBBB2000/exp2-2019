@@ -5,6 +5,7 @@ expressionAdd ::= PLUS term
 expressionSub ::= MINUS term
 
 term ::= factor
-factor ::= number
+factor ::= factorAmp | number
+factorAmp := AMP number //AMP = '&'
 number ::= NUM
 
