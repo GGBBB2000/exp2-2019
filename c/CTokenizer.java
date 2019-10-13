@@ -83,7 +83,8 @@ public class CTokenizer extends Tokenizer<CToken, CParseContext> {
                         startCol = colNo - 1;
                         text.append(ch);
                         state = 4;
-                    } else if (ch == '-') { startCol = colNo - 1;
+                    } else if (ch == '-') { 
+                        startCol = colNo - 1;
                         text.append(ch);
                         state = 5;
                     } else if (ch == '/') {
@@ -186,6 +187,7 @@ public class CTokenizer extends Tokenizer<CToken, CParseContext> {
                     break;
             }
         }
+        System.out.println("hugahuga" + tk.getText());
         return tk;
     }
 }
