@@ -36,7 +36,7 @@ public class CTokenizer extends Tokenizer<CToken, CParseContext> {
         }
         ++colNo;
         if (ch == '\n')  { colNo = 1; ++lineNo; }
-        //		System.out.print("'"+ch+"'("+(int)ch+")");
+        //System.out.print("'"+ch+"'("+(int)ch+")");
         return ch;
     }
     private void backChar(char c) {
@@ -83,6 +83,13 @@ public class CTokenizer extends Tokenizer<CToken, CParseContext> {
                         startCol = colNo - 1;
                         text.append(ch);
                         state = 4;
+                    } else if (ch == '-') { startCol = colNo - 1;
+                        text.append(ch);
+                        state = 5;
+                    } else if (ch == '/') {
+                        startCol = colNo - 1;
+                        text.append(ch);
+                        state = 6;
                     } else {			// ヘンな文字を読んだ
                         startCol = colNo - 1;
                         text.append(ch);
@@ -111,6 +118,71 @@ public class CTokenizer extends Tokenizer<CToken, CParseContext> {
                 case 4:					// +を読んだ
                     tk = new CToken(CToken.TK_PLUS, lineNo, startCol, "+");
                     accept = true;
+                    break;
+                case 5: // - を読んだ
+                    tk = new CToken(CToken.TK_MINUS, lineNo, startCol, "-");
+                    accept = true;
+                    break;
+                case 6: // '/'を読んだ(まだ割り算は考えない)
+                    ch = readChar();
+                    if (ch == '/') {
+                        text.append(ch);
+                        state = 7;
+                    } else if (ch == '*') {
+                        text.append(ch);
+                        state = 8;
+                    //} else { //このままだと割り算できない
+                    }
+                    break;
+
+                case 7: // <- このタイプのコメントの解析
+                    ch = readChar();
+                    if (ch == '\n') {
+                        tk = new CToken(CToken.TK_COMMENT, lineNo, startCol, text.toString());
+                        accept = true;
+                    } else if (ch == - 1) {
+                        backChar(ch);
+                        tk = new CToken(CToken.TK_COMMENT, lineNo, startCol, text.toString());
+                        accept = true;
+                    } else {
+                        text.append(ch);
+                    }
+                    break;
+
+                case 8: /* コメント本文の解析(*で違う状態へ) */
+                    ch = readChar();
+                    if (ch == '*') {
+                        text.append(ch);
+                        state = 9;
+                    } else if((int)ch == 10) {
+                        //text.append(ch);
+                        backChar(ch);
+                        state = 2;
+                        //accept = true;
+                        //tk = new CToken(CToken.TK_COMMENT, lineNo, startCol, text.toString());
+                    } else {
+                        text.append(ch);
+                    }
+                    break;
+                case 9: /* コメントのこれの解析 -> */
+                    ch = readChar();
+                    if (ch == '\0') { 
+                        /*TODO 途中でファイルが終わったときの
+                         * 状態を作るべきか？ */
+                        //text.append(ch);
+                        backChar(ch);
+                        tk = new CToken(CToken.TK_COMMENT, lineNo, startCol, text.toString());
+                        state = 2;
+                    } else if(ch == '*') {
+                        text.append(ch);
+                    } else if(ch == '/') {
+                        text.append(ch);
+                        accept = true;
+                        tk = new CToken(CToken.TK_COMMENT, lineNo, startCol, text.toString());
+                    } else {
+                        backChar(ch);
+                        state = 2;
+                    }
                     break;
             }
         }

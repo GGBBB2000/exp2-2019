@@ -1,0 +1,10 @@
+miniC ver01(
+program ::= expression EOF
+expression ::= term { expressionAdd | expressionSub }
+expressionAdd ::= PLUS term
+expressionSub ::= MINUS term
+
+term ::= factor
+factor ::= number
+number ::= NUM
+

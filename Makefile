@@ -9,3 +9,6 @@ clean: $(PROGRAM)
 
 run:
 	@cd .. ; java lang.c.MiniCompiler lang/c/test.c
+
+token:
+	@cd .. ; java lang.c.TestCToken lang/c/test.c
