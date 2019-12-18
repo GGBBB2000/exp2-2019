@@ -3,7 +3,6 @@ program ::= expression EOF
 expression ::= term { expressionAdd | expressionSub }
 expressionAdd ::= PLUS term
 expressionSub ::= MINUS term
-
 term ::= factor
 factor ::= factorAmp | number
 factorAmp := AMP number //AMP = '&'

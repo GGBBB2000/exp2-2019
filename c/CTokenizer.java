@@ -91,6 +91,10 @@ public class CTokenizer extends Tokenizer<CToken, CParseContext> {
                         startCol = colNo - 1;
                         text.append(ch);
                         state = 6;
+                    } else if (ch == '&') {
+                        startCol = colNo - 1;
+                        text.append(ch);
+                        state = 10;
                     } else {			// ヘンな文字を読んだ
                         startCol = colNo - 1;
                         text.append(ch);
@@ -185,6 +189,16 @@ public class CTokenizer extends Tokenizer<CToken, CParseContext> {
                     } else {
                         backChar(ch);
                         state = 2;
+                    }
+                    break;
+                case 10: /* &を読んだ (現状では)ANDではない*/
+                    ch = readChar();
+                    if (Character.isDigit(ch)) {
+                        text.append(ch);
+                    } else { 
+                        backChar(ch);	// 数を表さない文字は戻す（読まなかったことにする）
+                        tk = new CToken(CToken.TK_AMP, lineNo, startCol, text.toString());
+                        accept = true;
                     }
                     break;
             }

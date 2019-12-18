@@ -7,6 +7,7 @@ import lang.c.*;
 
 public class Factor extends CParseRule {
     // factor ::= number
+    private CToken op;
     private CParseRule number;
     public Factor(CParseContext pcx) {
     }

@@ -33,13 +33,6 @@ public class Expression extends CParseRule {
             term = list;
             tk = ct.getCurrentToken(pcx);
         }
-
-        //while (ExpressionSub.isFirst(tk)) {
-        //    list = new ExpressionSub(pcx, term);
-        //    list.parse(pcx);
-        //    term = list;
-        //    tk = ct.getCurrentToken(pcx);
-        //}
         expression = term;
     }
 
