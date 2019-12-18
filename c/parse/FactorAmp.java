@@ -20,10 +20,12 @@ public class FactorAmp extends CParseRule {
         op = ct.getCurrentToken(pcx);
         // &の次の字句を読む
         CToken tk = ct.getNextToken(pcx);
+        
         if (Number.isFirst(tk)) {
             number = new Number(pcx);
+            number.parse(pcx);
         } else {
-            pcx.fatalError(tk.toExplainString() + "-の後ろはtermです");
+            pcx.fatalError(tk.toExplainString() + "&の後ろはNumberです");
         }
     }
 
@@ -36,9 +38,5 @@ public class FactorAmp extends CParseRule {
     }
 
     public void codeGen(CParseContext pcx) throws FatalErrorException {
-        PrintStream o = pcx.getIOContext().getOutStream();
-        o.println(";;; factor starts");
-        if (number != null) { number.codeGen(pcx); }
-        o.println(";;; factor completes");
     }
 }
