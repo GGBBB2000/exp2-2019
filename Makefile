@@ -1,14 +1,13 @@
-PROGRAM= *.java c/*.java c/parse/*.java
-CLASS_FILE= *.class c/*.class c/parse/*.class
-all: $(PROGRAM) 
-	javac $(PROGRAM) 
+.PHONY: all run clean token
+all: *.class c/*.class c/parse/*.class
 
-clean: $(PROGRAM)
-	@rm $(CLASS_FILE)
-	@echo "remove $(CLASS_FILE)"
+%.class: %.java
+	javac *.java c/*.java c/parse/*.java
 
-run:
+run: all
 	@cd .. ; java lang.c.MiniCompiler lang/c/test.c
 
 token:
 	@cd .. ; java lang.c.TestCToken lang/c/test.c
+clean:
+	-rm -f *.class c/*.class c/parse/*.class
