@@ -197,7 +197,8 @@ public class CTokenizer extends Tokenizer<CToken, CParseContext> {
                     break;
                 case 10: /* &を読んだ (現状では)ANDではない*/
                     ch = readChar();
-                    if (Character.isDigit(ch)) {
+                    if (Character.isDigit(ch) ||
+                            (ch == 'x' && text.length() == 2)) {
                         text.append(ch);
                     } else { 
                         backChar(ch);	// 数を表さない文字は戻す（読まなかったことにする）
