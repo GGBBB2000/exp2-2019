@@ -12,12 +12,20 @@ public class Factor extends CParseRule {
     public Factor(CParseContext pcx) {
     }
     public static boolean isFirst(CToken tk) {
-        return Number.isFirst(tk);
+        //return Number.isFirst(tk);
+        return (tk.getType() == CToken.TK_NUM) ? Number.isFirst(tk) : FactorAmp.isFirst(tk);
     }
     public void parse(CParseContext pcx) throws FatalErrorException {
         // ここにやってくるときは、必ずisFirst()が満たされている
-        number = new Number(pcx);
-        number.parse(pcx);
+        var ct = pcx.getTokenizer();
+        var token = ct.getCurrentToken(pcx);
+        if (token.getType() == CToken.TK_AMP) {
+            var factorAmp = new FactorAmp(pcx);
+            factorAmp.parse(pcx);
+        } else {
+            number = new Number(pcx);
+            number.parse(pcx);
+        }
     }
 
     public void semanticCheck(CParseContext pcx) throws FatalErrorException {

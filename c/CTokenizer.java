@@ -63,6 +63,7 @@ public class CTokenizer extends Tokenizer<CToken, CParseContext> {
         CToken tk = null;
         char ch;
         int  startCol = colNo;
+        boolean isHex = false;
         StringBuffer text = new StringBuffer();
 
         int state = 0;
@@ -115,12 +116,18 @@ public class CTokenizer extends Tokenizer<CToken, CParseContext> {
                     break;
                 case 3:					// 数（10進数）の開始
                     ch = readChar();
-                    if (Character.isDigit(ch)) {
+                    if (Character.isDigit(ch) ||
+                        (isHex && ((ch >= 'a' && ch <= 'f') || (ch >= 'A' && ch <= 'F')))) {
                         text.append(ch);
                     } else {
                         // 数の終わり
-                        backChar(ch);	// 数を表さない文字は戻す（読まなかったことにする）
-                        tk = new CToken(CToken.TK_NUM, lineNo, startCol, text.toString());
+                        if (Math.
+                            abs(Integer.decode(text.toString()).intValue()) >= 0xFFFF) {
+                            tk = new CToken(CToken.TK_ILL, lineNo, startCol, text.toString());
+                        } else {
+                            backChar(ch);
+                            tk = new CToken(CToken.TK_NUM, lineNo, startCol, text.toString());
+                        }
                         accept = true;
                     }
                     break;
@@ -196,19 +203,13 @@ public class CTokenizer extends Tokenizer<CToken, CParseContext> {
                     }
                     break;
                 case 10: /* &を読んだ (現状では)ANDではない*/
-                    ch = readChar();
-                    if (Character.isDigit(ch) ||
-                            (ch == 'x' && text.length() == 2)) {
-                        text.append(ch);
-                    } else { 
-                        backChar(ch);	// 数を表さない文字は戻す（読まなかったことにする）
-                        tk = new CToken(CToken.TK_AMP, lineNo, startCol, text.toString());
-                        accept = true;
-                    }
+                    tk = new CToken(CToken.TK_AMP, lineNo, startCol, text.toString());
+                    accept = true;
                     break;
                 case 11: // 16/8進数を読む
                     ch = readChar();
                     if (ch == 'x' || (ch >= '0' && ch <= '9')) {
+                        isHex = true;
                         text.append(ch);
                         state = 3;
                     } else { 
