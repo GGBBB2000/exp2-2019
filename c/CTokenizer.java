@@ -75,7 +75,11 @@ public class CTokenizer extends Tokenizer<CToken, CParseContext> {
                     } else if (ch == (char) -1) {	// EOF
                         startCol = colNo - 1;
                         state = 1;
-                    } else if (ch >= '0' && ch <= '9') {
+                    } else if (ch == '0') {
+                        startCol = colNo - 1;
+                        text.append(ch);
+                        state = 11;
+                    } else if (ch > '0' && ch <= '9') {
                         startCol = colNo - 1;
                         text.append(ch);
                         state = 3;
@@ -199,6 +203,16 @@ public class CTokenizer extends Tokenizer<CToken, CParseContext> {
                         backChar(ch);	// 数を表さない文字は戻す（読まなかったことにする）
                         tk = new CToken(CToken.TK_AMP, lineNo, startCol, text.toString());
                         accept = true;
+                    }
+                    break;
+                case 11: // 16/8進数を読む
+                    ch = readChar();
+                    if (ch == 'x' || (ch >= '0' && ch <= '9')) {
+                        text.append(ch);
+                        state = 3;
+                    } else { 
+                        backChar(ch);
+                        state = 2;
                     }
                     break;
             }
