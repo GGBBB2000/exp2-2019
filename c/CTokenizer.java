@@ -132,7 +132,9 @@ public class CTokenizer extends Tokenizer<CToken, CParseContext> {
                     } else if (ch == '*') {
                         text.append(ch);
                         state = 8;
-                    //} else { //このままだと割り算できない
+                    } else { //このままだと割り算できない
+                        text.append(ch);
+                        state = 2;
                     }
                     break;
 
@@ -186,8 +188,8 @@ public class CTokenizer extends Tokenizer<CToken, CParseContext> {
                     }
                     break;
             }
+            //System.out.println(state);
         }
-        System.out.println("hugahuga" + tk.getText());
         return tk;
     }
 }

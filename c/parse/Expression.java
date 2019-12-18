@@ -21,18 +21,25 @@ public class Expression extends CParseRule {
         term.parse(pcx);
         CTokenizer ct = pcx.getTokenizer();
         CToken tk = ct.getCurrentToken(pcx);
-        while (ExpressionAdd.isFirst(tk)) {
-            list = new ExpressionAdd(pcx, term);
+
+        while (ExpressionAdd.isFirst(tk)
+                || ExpressionSub.isFirst(tk)) {
+            if (tk.getType() == 2) {
+                list = new ExpressionAdd(pcx, term);
+            } else {
+                list = new ExpressionSub(pcx, term);
+            }
             list.parse(pcx);
             term = list;
             tk = ct.getCurrentToken(pcx);
         }
-        while (ExpressionSub.isFirst(tk)) {
-            list = new ExpressionSub(pcx, term);
-            list.parse(pcx);
-            term = list;
-            tk = ct.getCurrentToken(pcx);
-        }
+
+        //while (ExpressionSub.isFirst(tk)) {
+        //    list = new ExpressionSub(pcx, term);
+        //    list.parse(pcx);
+        //    term = list;
+        //    tk = ct.getCurrentToken(pcx);
+        //}
         expression = term;
     }
 

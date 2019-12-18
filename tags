@@ -1,0 +1,72 @@
+!_TAG_FILE_FORMAT	2	/extended format; --format=1 will not append ;" to lines/
+!_TAG_FILE_SORTED	1	/0=unsorted, 1=sorted, 2=foldcase/
+!_TAG_OUTPUT_MODE	u-ctags	/u-ctags or e-ctags/
+!_TAG_PROGRAM_AUTHOR	Universal Ctags Team	//
+!_TAG_PROGRAM_NAME	Universal Ctags	/Derived from Exuberant Ctags/
+!_TAG_PROGRAM_URL	https://ctags.io/	/official site/
+!_TAG_PROGRAM_VERSION	0.0.0	/3fdf28bc/
+CParseContext	c/CParseContext.java	/^	public CParseContext(IOContext ioCtx,  CTokenizer tknz) {$/;"	m	class:CParseContext
+CParseContext	c/CParseContext.java	/^public class CParseContext extends ParseContext {$/;"	c
+CParseRule	c/CParseRule.java	/^public abstract class CParseRule extends ParseRule<CParseContext> implements lang.Compiler<CPars/;"	c
+CToken	c/CToken.java	/^    public CToken(int type, int lineNo, int colNo, String s) {$/;"	m	class:CToken
+CToken	c/CToken.java	/^public class CToken extends SimpleToken {$/;"	c
+CTokenRule	c/CTokenRule.java	/^	public CTokenRule() {$/;"	m	class:CTokenRule
+CTokenRule	c/CTokenRule.java	/^public class CTokenRule extends HashMap<String, Object> {$/;"	c
+CTokenizer	c/CTokenizer.java	/^    public CTokenizer(CTokenRule rule) {$/;"	m	class:CTokenizer
+CTokenizer	c/CTokenizer.java	/^public class CTokenizer extends Tokenizer<CToken, CParseContext> {$/;"	c
+CType	c/CType.java	/^	private CType(int type, String s) {$/;"	m	class:CType	file:
+CType	c/CType.java	/^public class CType {$/;"	c
+MiniCompiler	c/MiniCompiler.java	/^public class MiniCompiler {$/;"	c
+TK_COMMENT	c/CToken.java	/^    public static final int TK_COMMENT = 4; \/\/ \/$/;"	f	class:CToken
+TK_MINUS	c/CToken.java	/^    public static final int TK_MINUS = 3; \/\/ -$/;"	f	class:CToken
+TK_PLUS	c/CToken.java	/^    public static final int TK_PLUS  = 2; \/\/ +$/;"	f	class:CToken
+T_err	c/CType.java	/^	public static final int T_err		= 0;		\/\/ 型エラー$/;"	f	class:CType
+T_int	c/CType.java	/^	public static final int T_int		= 1;		\/\/ int$/;"	f	class:CType
+T_pint	c/CType.java	/^	public static final int T_pint		= 2;		\/\/ int*$/;"	f	class:CType
+TestCToken	c/TestCToken.java	/^public class TestCToken {$/;"	c
+TestTokenizer	c/TestCToken.java	/^        public TestTokenizer(CParseContext pcx) {}$/;"	m	class:TestCToken.TestTokenizer
+TestTokenizer	c/TestCToken.java	/^    private static class TestTokenizer extends CParseRule {$/;"	c	class:TestCToken
+backCh	c/CTokenizer.java	/^    private char		backCh;$/;"	f	class:CTokenizer	file:
+backChExist	c/CTokenizer.java	/^    private boolean		backChExist = false;$/;"	f	class:CTokenizer	file:
+backChar	c/CTokenizer.java	/^    private void backChar(char c) {$/;"	m	class:CTokenizer	file:
+codeGen	c/TestCToken.java	/^        public void codeGen(CParseContext pcx) throws FatalErrorException {$/;"	m	class:TestCToken.TestTokenizer
+colNo	c/CTokenizer.java	/^    private int			lineNo, colNo;$/;"	f	class:CTokenizer	file:
+ctype	c/CParseRule.java	/^	private CType ctype;$/;"	f	class:CParseRule	file:
+currentTk	c/CTokenizer.java	/^    private CToken currentTk = null;$/;"	f	class:CTokenizer	file:
+err	c/CTokenizer.java	/^    private PrintStream err;$/;"	f	class:CTokenizer	file:
+getCType	c/CParseRule.java	/^	public CType getCType()				{ return ctype; }$/;"	m	class:CParseRule
+getCType	c/CType.java	/^	public static CType getCType(int type) {$/;"	m	class:CType
+getCurrentToken	c/CTokenizer.java	/^    public CToken getCurrentToken(CParseContext pctx) {$/;"	m	class:CTokenizer
+getNextToken	c/CTokenizer.java	/^    public CToken getNextToken(CParseContext pctx) {$/;"	m	class:CTokenizer
+getSeqId	c/CParseContext.java	/^	public int getSeqId() { return ++seqNo; }$/;"	m	class:CParseContext
+getTokenizer	c/CParseContext.java	/^	public CTokenizer getTokenizer()		{ return (CTokenizer) super.getTokenizer(); }$/;"	m	class:CParseContext
+getType	c/CType.java	/^	public int getType()			{ return type; }$/;"	m	class:CType
+in	c/CTokenizer.java	/^    private InputStream in;$/;"	f	class:CTokenizer	file:
+isCType	c/CType.java	/^	public boolean isCType(int t)	{ return t == type; }$/;"	m	class:CType
+isConstant	c/CParseRule.java	/^	private boolean isConstant;$/;"	f	class:CParseRule	file:
+isConstant	c/CParseRule.java	/^	public boolean isConstant()					{ return isConstant; }$/;"	m	class:CParseRule
+isFirst	c/TestCToken.java	/^        public static boolean isFirst(CToken tk) { return true; }$/;"	m	class:TestCToken.TestTokenizer
+lang.c	c/CParseContext.java	/^package lang.c;$/;"	p
+lang.c	c/CParseRule.java	/^package lang.c;$/;"	p
+lang.c	c/CToken.java	/^package lang.c;$/;"	p
+lang.c	c/CTokenRule.java	/^package lang.c;$/;"	p
+lang.c	c/CTokenizer.java	/^package lang.c;$/;"	p
+lang.c	c/CType.java	/^package lang.c;$/;"	p
+lang.c	c/MiniCompiler.java	/^package lang.c;$/;"	p
+lang.c	c/TestCToken.java	/^package lang.c;$/;"	p
+lineNo	c/CTokenizer.java	/^    private int			lineNo, colNo;$/;"	f	class:CTokenizer	file:
+main	c/MiniCompiler.java	/^    public static void main(String[] args) {$/;"	m	class:MiniCompiler
+main	c/TestCToken.java	/^    public static void main(String[] args) {$/;"	m	class:TestCToken
+parse	c/TestCToken.java	/^        public void parse(CParseContext ctx) {$/;"	m	class:TestCToken.TestTokenizer
+readChar	c/CTokenizer.java	/^    private char readChar() {$/;"	m	class:CTokenizer	file:
+readToken	c/CTokenizer.java	/^    private CToken readToken() {$/;"	m	class:CTokenizer	file:
+rule	c/CTokenizer.java	/^    private CTokenRule	rule;$/;"	f	class:CTokenizer	file:
+semanticCheck	c/TestCToken.java	/^        public void semanticCheck(CParseContext pcx) throws FatalErrorException {$/;"	m	class:TestCToken.TestTokenizer
+seqNo	c/CParseContext.java	/^	private int seqNo = 0;$/;"	f	class:CParseContext	file:
+serialVersionUID	c/CTokenRule.java	/^	private static final long serialVersionUID = 1139476411716798082L;$/;"	f	class:CTokenRule	file:
+setCType	c/CParseRule.java	/^	public void setCType(CType ctype)	{ this.ctype = ctype; }$/;"	m	class:CParseRule
+setConstant	c/CParseRule.java	/^	public void setConstant(boolean isConstant)	{ this.isConstant = isConstant; }$/;"	m	class:CParseRule
+string	c/CType.java	/^	private String string;$/;"	f	class:CType	file:
+toString	c/CType.java	/^	public String toString()		{ return string; }$/;"	m	class:CType
+type	c/CType.java	/^	private int type;$/;"	f	class:CType	file:
+typeArray	c/CType.java	/^	private static CType[] typeArray = {$/;"	f	class:CType	file:

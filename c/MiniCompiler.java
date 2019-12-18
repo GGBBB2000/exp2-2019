@@ -13,7 +13,6 @@ public class MiniCompiler {
             CTokenizer ct = pcx.getTokenizer();
             CToken tk = ct.getNextToken(pcx);
             if (Program.isFirst(tk)) {
-                System.out.println(tk.getText() + "huga");
                 CParseRule parseTree = new Program(pcx);
                 parseTree.parse(pcx); // 構文解析
                 if (pcx.hasNoError()) parseTree.semanticCheck(pcx); // 意味解析
