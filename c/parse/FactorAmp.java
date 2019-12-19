@@ -32,8 +32,9 @@ public class FactorAmp extends CParseRule {
     public void semanticCheck(CParseContext pcx) throws FatalErrorException {
         if (number != null) {
             number.semanticCheck(pcx);
-            setCType(number.getCType());		// number の型をそのままコピー
-            setConstant(number.isConstant());	// number は常に定数
+            //setCType(CType.getCType(CType.T_pint));
+            this.setCType(CType.getCType(CType.T_pint));
+            this.setConstant(number.isConstant());	// number は常に定数
         }
     }
 

@@ -19,6 +19,7 @@ public class MiniCompiler {
                 if (pcx.hasNoError()) parseTree.codeGen(pcx); // コード生成
                 pcx.errorReport();
             } else {
+                System.out.println(tk.getType());
                 pcx.fatalError(tk.toExplainString() + "プログラムの先頭にゴミがあります");
             }
         } catch (FatalErrorException e) {

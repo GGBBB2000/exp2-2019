@@ -94,7 +94,7 @@ public class CTokenizer extends Tokenizer<CToken, CParseContext> {
                         state = 5;
                     } else if (ch == '/') {
                         startCol = colNo - 1;
-                        text.append(ch);
+                        //text.append(ch);
                         state = 6;
                     } else if (ch == '&') {
                         startCol = colNo - 1;
@@ -142,10 +142,8 @@ public class CTokenizer extends Tokenizer<CToken, CParseContext> {
                 case 6: // '/'を読んだ(まだ割り算は考えない)
                     ch = readChar();
                     if (ch == '/') {
-                        text.append(ch);
                         state = 7;
                     } else if (ch == '*') {
-                        text.append(ch);
                         state = 8;
                     } else { //このままだと割り算できない
                         text.append(ch);
@@ -156,30 +154,20 @@ public class CTokenizer extends Tokenizer<CToken, CParseContext> {
                 case 7: // <- このタイプのコメントの解析
                     ch = readChar();
                     if (ch == '\n') {
-                        tk = new CToken(CToken.TK_COMMENT, lineNo, startCol, text.toString());
-                        accept = true;
+                        state = 0;
                     } else if (ch == - 1) {
                         backChar(ch);
-                        tk = new CToken(CToken.TK_COMMENT, lineNo, startCol, text.toString());
-                        accept = true;
-                    } else {
-                        text.append(ch);
-                    }
+                        state = 1;
+                    } 
                     break;
 
                 case 8: /* コメント本文の解析(*で違う状態へ) */
                     ch = readChar();
                     if (ch == '*') {
-                        text.append(ch);
                         state = 9;
                     } else if((int)ch == 10) {
-                        //text.append(ch);
                         backChar(ch);
-                        state = 2;
-                        //accept = true;
-                        //tk = new CToken(CToken.TK_COMMENT, lineNo, startCol, text.toString());
-                    } else {
-                        text.append(ch);
+                        state = 1;
                     }
                     break;
                 case 9: /* コメントのこれの解析 -> */
@@ -192,11 +180,9 @@ public class CTokenizer extends Tokenizer<CToken, CParseContext> {
                         tk = new CToken(CToken.TK_COMMENT, lineNo, startCol, text.toString());
                         state = 2;
                     } else if(ch == '*') {
-                        text.append(ch);
+                        //text.append(ch);
                     } else if(ch == '/') {
-                        text.append(ch);
-                        accept = true;
-                        tk = new CToken(CToken.TK_COMMENT, lineNo, startCol, text.toString());
+                        state = 0;
                     } else {
                         backChar(ch);
                         state = 2;
