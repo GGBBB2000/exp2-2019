@@ -6,9 +6,9 @@ import lang.*;
 import lang.c.*;
 
 public class Factor extends CParseRule {
-    // factor ::= number
+    // factor ::= factorAmp | number
     private CToken op;
-    private CParseRule number;
+    private CParseRule factor;
     public Factor(CParseContext pcx) {
     }
     public static boolean isFirst(CToken tk) {
@@ -20,26 +20,25 @@ public class Factor extends CParseRule {
         var ct = pcx.getTokenizer();
         var token = ct.getCurrentToken(pcx);
         if (token.getType() == CToken.TK_AMP) {
-            var factorAmp = new FactorAmp(pcx);
-            factorAmp.parse(pcx);
+            factor= new FactorAmp(pcx);
         } else {
-            number = new Number(pcx);
-            number.parse(pcx);
+            factor = new Number(pcx);
         }
+        factor.parse(pcx);
     }
 
     public void semanticCheck(CParseContext pcx) throws FatalErrorException {
-        if (number != null) {
-            number.semanticCheck(pcx);
-            setCType(number.getCType());		// number の型をそのままコピー
-            setConstant(number.isConstant());	// number は常に定数
+        if (factor != null) {
+            factor .semanticCheck(pcx);
+            setCType(factor.getCType());		// numberの型をそのままコピー
+            setConstant(factor.isConstant());	// factor は常に定数
         }
     }
 
     public void codeGen(CParseContext pcx) throws FatalErrorException {
         PrintStream o = pcx.getIOContext().getOutStream();
         o.println(";;; factor starts");
-        if (number != null) { number.codeGen(pcx); }
+        if (factor != null) { factor.codeGen(pcx); }
         o.println(";;; factor completes");
     }
 }
