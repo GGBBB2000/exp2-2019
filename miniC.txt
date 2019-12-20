@@ -1,11 +1,13 @@
-miniC ver03(
+miniC ver03
 program ::= expression EOF
 expression ::= term { expressionAdd | expressionSub }
 expressionAdd ::= PLUS term
 expressionSub ::= MINUS term
+
 term ::= factor{ termMult | termDiv }
 termMult ::= MULT factor
 termDiv ::= DIV factor
+
 factor ::= plusFactor | minusFactor | unsignedFactor
 plusFactor ::= PLUS unsignedFactor
 minusFactor ::= MINUS unsignedFactor
