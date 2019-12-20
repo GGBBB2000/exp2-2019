@@ -39,5 +39,6 @@ public class FactorAmp extends CParseRule {
     }
 
     public void codeGen(CParseContext pcx) throws FatalErrorException {
+        number.codeGen(pcx);
     }
 }
