@@ -7,7 +7,7 @@ import lang.c.*;
 
 public class TermDiv extends CParseRule {
     private CParseRule factor;
-    public Term(CParseContext pcx) {
+    public TermDiv(CParseContext pcx) {
     }
     public static boolean isFirst(CToken tk) {
         return tk.getType() == CToken.TK_DIV;

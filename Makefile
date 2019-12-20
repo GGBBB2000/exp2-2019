@@ -1,6 +1,6 @@
 .PHONY: all run clean token
 # all: *.class c/*.class c/parse/*.class
-all: c/test.c Assembler.class Compiler.class FatalErrorException.class IOContext.class LL1.class ParseContext.class ParseRule.class SimpleParseContext.class SimpleToken.class SimpleTokenizer.class SymbolTable.class SymbolTableEntry.class Token.class Tokenizer.class c/CParseContext.class c/CParseRule.class c/CToken.class c/CTokenRule.class c/CTokenizer.class c/CType.class c/MiniCompiler.class c/TestCToken.class c/TestCToken.class c/parse/Expression.class c/parse/ExpressionAdd.class c/parse/ExpressionSub.class c/parse/Factor.class c/parse/FactorAmp.class c/parse/Number.class c/parse/Program.class c/parse/Term.class
+all: c/test.c Assembler.class Compiler.class FatalErrorException.class IOContext.class LL1.class ParseContext.class ParseRule.class SimpleParseContext.class SimpleToken.class SimpleTokenizer.class SymbolTable.class SymbolTableEntry.class Token.class Tokenizer.class c/CParseContext.class c/CParseRule.class c/CToken.class c/CTokenRule.class c/CTokenizer.class c/CType.class c/MiniCompiler.class c/TestCToken.class c/TestCToken.class c/parse/Expression.class c/parse/ExpressionAdd.class c/parse/ExpressionSub.class c/parse/Factor.class c/parse/FactorAmp.class c/parse/Number.class c/parse/Program.class c/parse/Term.class c/parse/TermDiv.class c/parse/TermMult.class c/parse/PlusFactor.class c/parse/MinusFactor.class
 %.class: %.java
 	javac *.java c/*.java c/parse/*.java
 

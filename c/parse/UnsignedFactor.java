@@ -5,15 +5,15 @@ import java.io.PrintStream;
 import lang.*;
 import lang.c.*;
 
-public class Factor extends CParseRule {
+public class UnsignedFactor extends CParseRule {
     // factor ::= factorAmp | number
     private CToken op;
     private CParseRule factor;
-    public Factor(CParseContext pcx) {
+    public UnsignedFactor(CParseContext pcx) {
     }
     public static boolean isFirst(CToken tk) {
         //return Number.isFirst(tk);
-        return Number.isFirst(tk) || FactorAmp.isFirst(tk);
+        return Number.isFirst(tk) || FactorAmp.isFirst(tk) || tk.getType() == CToken.TK_LPAR;
     }
     public void parse(CParseContext pcx) throws FatalErrorException {
         // ここにやってくるときは、必ずisFirst()が満たされている

@@ -8,7 +8,7 @@ import lang.c.*;
 public class TermMult extends CParseRule {
     // term ::= factor
     private CParseRule factor;
-    public Term(CParseContext pcx) {
+    public TermMult(CParseContext pcx) {
     }
     public static boolean isFirst(CToken tk) {
         return tk.getType() == CToken.TK_MUL;
