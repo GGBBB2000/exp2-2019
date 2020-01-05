@@ -24,7 +24,7 @@ public class Expression extends CParseRule {
 
         while (ExpressionAdd.isFirst(tk)
                 || ExpressionSub.isFirst(tk)) {
-            if (tk.getType() == 2) {
+            if (tk.getType() == CToken.TK_PLUS) {
                 list = new ExpressionAdd(pcx, term);
             } else {
                 list = new ExpressionSub(pcx, term);

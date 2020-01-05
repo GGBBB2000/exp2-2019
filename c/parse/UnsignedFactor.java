@@ -13,6 +13,7 @@ public class UnsignedFactor extends CParseRule {
     }
     public static boolean isFirst(CToken tk) {
         //return Number.isFirst(tk);
+
         return Number.isFirst(tk) || FactorAmp.isFirst(tk) || tk.getType() == CToken.TK_LPAR;
     }
     public void parse(CParseContext pcx) throws FatalErrorException {

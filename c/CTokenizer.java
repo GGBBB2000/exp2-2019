@@ -212,7 +212,7 @@ public class CTokenizer extends Tokenizer<CToken, CParseContext> {
                         text = new StringBuffer();
                     } else {
                         text.append(ch);
-                        state = 2;
+                        state = 8;
                     }
                     break;
                 case 10: /* &を読んだ (現状では)ANDではない*/
