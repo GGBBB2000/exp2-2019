@@ -9,6 +9,7 @@ public class UnsignedFactor extends CParseRule {
     // factor ::= factorAmp | number
     private CToken op;
     private CParseRule factor;
+    private boolean hasPar = false;
     public UnsignedFactor(CParseContext pcx) {
     }
     public static boolean isFirst(CToken tk) {
@@ -22,6 +23,20 @@ public class UnsignedFactor extends CParseRule {
         var token = ct.getCurrentToken(pcx);
         if (token.getType() == CToken.TK_AMP) {
             factor= new FactorAmp(pcx);
+        } else if (token.getType() == CToken.TK_LPAR) {
+            token = ct.getNextToken(pcx);
+            hasPar = true;
+            if (Expression.isFirst(token)) {
+                factor = new Expression(pcx);
+                factor.parse(pcx);
+                token = ct.getCurrentToken(pcx);
+                if (token.getType() != CToken.TK_RPAR) {
+                    pcx.fatalError(token.toExplainString() + "()が閉じていません.");
+                }
+                token = ct.getCurrentToken(pcx);
+            } else {
+                pcx.fatalError(token.toExplainString() + "TK_LPARの後ろはExpressionです");
+            }
         } else {
             factor = new Number(pcx);
         }
@@ -30,7 +45,7 @@ public class UnsignedFactor extends CParseRule {
 
     public void semanticCheck(CParseContext pcx) throws FatalErrorException {
         if (factor != null) {
-            factor .semanticCheck(pcx);
+            factor.semanticCheck(pcx);
             setCType(factor.getCType());		// numberの型をそのままコピー
             setConstant(factor.isConstant());	// factor は常に定数
         }

@@ -20,7 +20,9 @@ public class Factor extends CParseRule {
         var ct = pcx.getTokenizer();
         var token = ct.getCurrentToken(pcx);
         if (token.getType() == CToken.TK_AMP) {
-            factor= new FactorAmp(pcx);
+            factor = new FactorAmp(pcx);
+        } else if(token.getType() == CToken.TK_LPAR){
+            factor = new UnsignedFactor(pcx);
         } else {
             factor = new Number(pcx);
         }

@@ -16,20 +16,23 @@ public class Term extends CParseRule {
     }
     public void parse(CParseContext pcx) throws FatalErrorException {
         // ここにやってくるときは、必ずisFirst()が満たされている
-        CTokenizer ct = pcx.getTokenizer();
-        CToken tk = ct.getCurrentToken(pcx);
         var factor = new Factor(pcx);
         factor.parse(pcx);
+
+        CTokenizer ct = pcx.getTokenizer();
+        CToken tk = ct.getCurrentToken(pcx);
+
         termMulDiv = new ArrayList<CParseRule>();
         termMulDiv.add(factor);
         CParseRule mulDiv = null;
-        System.out.println("hogehoge");
         while (TermMult.isFirst(tk) || TermDiv.isFirst(tk)) {
+            System.out.println("hogehoge" + tk.getType());
             if (tk.getType() == CToken.TK_MUL) {
                 mulDiv = new TermMult(pcx);
             } else {
                 mulDiv = new TermDiv(pcx);
             }
+            tk = ct.getNextToken(pcx);
             mulDiv.parse(pcx);
             termMulDiv.add(mulDiv);
         }

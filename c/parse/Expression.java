@@ -19,11 +19,13 @@ public class Expression extends CParseRule {
         CParseRule term = null, list = null;
         term = new Term(pcx);
         term.parse(pcx);
+
         CTokenizer ct = pcx.getTokenizer();
         CToken tk = ct.getCurrentToken(pcx);
 
         while (ExpressionAdd.isFirst(tk)
                 || ExpressionSub.isFirst(tk)) {
+            System.out.println("hogehoge" +tk.toExplainString());
             if (tk.getType() == CToken.TK_PLUS) {
                 list = new ExpressionAdd(pcx, term);
             } else {
