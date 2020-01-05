@@ -19,9 +19,11 @@ public class Term extends CParseRule {
         CTokenizer ct = pcx.getTokenizer();
         CToken tk = ct.getCurrentToken(pcx);
         var factor = new Factor(pcx);
+        factor.parse(pcx);
         termMulDiv = new ArrayList<CParseRule>();
         termMulDiv.add(factor);
         CParseRule mulDiv = null;
+        System.out.println("hogehoge");
         while (TermMult.isFirst(tk) || TermDiv.isFirst(tk)) {
             if (tk.getType() == CToken.TK_MUL) {
                 mulDiv = new TermMult(pcx);

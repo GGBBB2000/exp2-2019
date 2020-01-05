@@ -8,6 +8,7 @@ import lang.c.*;
 
 public class MinusFactor extends CParseRule {
     private CParseRule unsignedFactor;
+    private CToken op;
     public MinusFactor(CParseContext pcx) {
     }
     public static boolean isFirst(CToken tk) {
@@ -15,6 +16,10 @@ public class MinusFactor extends CParseRule {
     }
     public void parse(CParseContext pcx) throws FatalErrorException {
         // ここにやってくるときは、必ずisFirst()が満たされている
+        CTokenizer ct = pcx.getTokenizer();
+        op = ct.getCurrentToken(pcx);
+        CToken tk = ct.getNextToken(pcx);
+
         unsignedFactor = new UnsignedFactor(pcx);
         unsignedFactor.parse(pcx);
     }

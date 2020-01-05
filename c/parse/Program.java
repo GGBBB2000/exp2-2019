@@ -20,8 +20,7 @@ public class Program extends CParseRule {
         CTokenizer ct = pcx.getTokenizer();
         CToken tk = ct.getCurrentToken(pcx);
         System.out.printf("tk.getType(): %d,CTOKEN.TK_EOF %d\n", tk.getType(), CToken.TK_EOF);
-        if (tk.getType() != CToken.TK_EOF &&
-            tk.getType() != CToken.TK_COMMENT) {
+        if (tk.getType() != CToken.TK_EOF) {
             pcx.fatalError(tk.toExplainString() + "プログラムの最後にゴミがあります");
         }
     }
