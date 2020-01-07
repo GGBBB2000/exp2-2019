@@ -39,11 +39,13 @@ public class Expression extends CParseRule {
     }
 
     public void semanticCheck(CParseContext pcx) throws FatalErrorException {
+        System.out.print("Expression(");
         if (expression != null) {
             expression.semanticCheck(pcx);
             this.setCType(expression.getCType());		// expression の型をそのままコピー
             this.setConstant(expression.isConstant());
         }
+        System.out.print(")");
     }
 
     public void codeGen(CParseContext pcx) throws FatalErrorException {
@@ -86,6 +88,7 @@ class ExpressionAdd extends CParseRule {
             {	CType.T_err,	CType.T_int ,   CType.T_pint},	// T_int
             {   CType.T_err,    CType.T_pint,   CType.T_err}
         };
+        System.out.print("ExpressionAdd(PLUS ");
         if (left != null && right != null) {
             left.semanticCheck(pcx);
             right.semanticCheck(pcx);
@@ -98,6 +101,7 @@ class ExpressionAdd extends CParseRule {
             this.setCType(CType.getCType(nt));
             this.setConstant(left.isConstant() && right.isConstant());	// +の左右両方が定数のときだけ定数
         }
+        System.out.print(")");
     }
 
     public void codeGen(CParseContext pcx) throws FatalErrorException {

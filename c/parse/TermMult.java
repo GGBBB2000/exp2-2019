@@ -22,11 +22,17 @@ public class TermMult extends CParseRule {
     }
 
     public void semanticCheck(CParseContext pcx) throws FatalErrorException {
+        System.out.print("MULT Factor(");
         if (factor != null) {
             factor.semanticCheck(pcx);
+            var type = factor.getCType().getType();
+            if (type == CType.T_pint) {
+                pcx.fatalError("乗算にポインタを用いることができません");
+            }
             this.setCType(factor.getCType());		// factor の型をそのままコピー
             this.setConstant(factor.isConstant());
         }
+        System.out.print(")");
     }
 
     public void codeGen(CParseContext pcx) throws FatalErrorException {

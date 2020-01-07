@@ -21,6 +21,7 @@ public class Number extends CParseRule {
     }
 
     public void semanticCheck(CParseContext pcx) throws FatalErrorException {
+        System.out.print("Number ");
         this.setCType(CType.getCType(CType.T_int));
         this.setConstant(true);
     }

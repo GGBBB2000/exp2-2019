@@ -19,22 +19,35 @@ public class Factor extends CParseRule {
         // ここにやってくるときは、必ずisFirst()が満たされている
         var ct = pcx.getTokenizer();
         var token = ct.getCurrentToken(pcx);
-        if (token.getType() == CToken.TK_AMP) {
-            factor = new FactorAmp(pcx);
-        } else if(token.getType() == CToken.TK_LPAR){
-            factor = new UnsignedFactor(pcx);
-        } else {
-            factor = new Number(pcx);
+        // if (token.getType() == CToken.TK_AMP) {
+        //     factor = new FactorAmp(pcx);
+        // } else if(token.getType() == CToken.TK_LPAR){
+        //     factor = new UnsignedFactor(pcx);
+        // } else {
+        //     factor = new Number(pcx);
+        // }
+        switch (token.getType()) {
+            case CToken.TK_PLUS:
+                factor = new PlusFactor(pcx);
+                break;
+            case CToken.TK_MINUS:
+                factor = new MinusFactor(pcx);
+                break;
+            default:
+                factor = new UnsignedFactor(pcx);
+                break;
         }
         factor.parse(pcx);
     }
 
     public void semanticCheck(CParseContext pcx) throws FatalErrorException {
+        System.out.print("Factor(");
         if (factor != null) {
-            factor .semanticCheck(pcx);
+            factor.semanticCheck(pcx);
             setCType(factor.getCType());		// numberの型をそのままコピー
             setConstant(factor.isConstant());	// factor は常に定数
         }
+        System.out.print(")");
     }
 
     public void codeGen(CParseContext pcx) throws FatalErrorException {

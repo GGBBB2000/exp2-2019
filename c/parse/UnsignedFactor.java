@@ -23,6 +23,7 @@ public class UnsignedFactor extends CParseRule {
         var token = ct.getCurrentToken(pcx);
         if (token.getType() == CToken.TK_AMP) {
             factor= new FactorAmp(pcx);
+            factor.parse(pcx);
         } else if (token.getType() == CToken.TK_LPAR) {
             token = ct.getNextToken(pcx);
             hasPar = true;
@@ -33,22 +34,28 @@ public class UnsignedFactor extends CParseRule {
                 if (token.getType() != CToken.TK_RPAR) {
                     pcx.fatalError(token.toExplainString() + "()が閉じていません.");
                 }
-                token = ct.getCurrentToken(pcx);
+                token = ct.getNextToken(pcx);
             } else {
                 pcx.fatalError(token.toExplainString() + "TK_LPARの後ろはExpressionです");
             }
         } else {
+            System.out.println("hogehogehugahuga");
             factor = new Number(pcx);
+            factor.parse(pcx);
         }
-        factor.parse(pcx);
+        // factor.parse(pcx);
     }
 
     public void semanticCheck(CParseContext pcx) throws FatalErrorException {
+        System.out.print("UnsignedFactor( ");
+        if (hasPar) { System.out.print("LPAR ");}
         if (factor != null) {
             factor.semanticCheck(pcx);
-            setCType(factor.getCType());		// numberの型をそのままコピー
+            setCType(factor.getCType());		// number factorAmp expressionの型をそのままコピー
             setConstant(factor.isConstant());	// factor は常に定数
         }
+        if (hasPar) { System.out.print("RPAR ");}
+        System.out.print(")");
     }
 
     public void codeGen(CParseContext pcx) throws FatalErrorException {

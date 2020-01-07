@@ -26,7 +26,11 @@ public class Program extends CParseRule {
     }
 
     public void semanticCheck(CParseContext pcx) throws FatalErrorException {
-        if (program != null) { program.semanticCheck(pcx); }
+        System.out.print("Program(");
+        if (program != null) {
+            program.semanticCheck(pcx);
+        }
+        System.out.println(")");
     }
 
     public void codeGen(CParseContext pcx) throws FatalErrorException {

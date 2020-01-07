@@ -26,6 +26,7 @@ public class PlusFactor extends CParseRule {
     }
 
     public void semanticCheck(CParseContext pcx) throws FatalErrorException {
+        System.out.print("PLUS ");
         if (unsignedFactor != null) {
             unsignedFactor.semanticCheck(pcx);
             this.setCType(unsignedFactor.getCType());		// unsignedFactor の型をそのままコピー
