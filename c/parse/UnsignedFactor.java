@@ -1,9 +1,11 @@
 package lang.c.parse;
 
-import java.io.PrintStream;
+import lang.FatalErrorException;
+import lang.c.CParseContext;
+import lang.c.CParseRule;
+import lang.c.CToken;
 
-import lang.*;
-import lang.c.*;
+import java.io.PrintStream;
 
 public class UnsignedFactor extends CParseRule {
     // factor ::= factorAmp | number
@@ -17,7 +19,10 @@ public class UnsignedFactor extends CParseRule {
     public static boolean isFirst(CToken tk) {
         //return Number.isFirst(tk);
 
-        return Number.isFirst(tk) || FactorAmp.isFirst(tk) || tk.getType() == CToken.TK_LPAR;
+        return Number.isFirst(tk)
+                || FactorAmp.isFirst(tk)
+                || tk.getType() == CToken.TK_LPAR
+                || AddressToValue.isFirst(tk);
     }
 
     public void parse(CParseContext pcx) throws FatalErrorException {

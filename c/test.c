@@ -1,1 +1,1 @@
-waefao;fjawoijoi;
+hoge[1]
