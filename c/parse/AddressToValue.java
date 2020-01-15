@@ -8,7 +8,7 @@ import lang.c.CToken;
 public class AddressToValue extends CParseRule {
     CParseRule primary;
 
-    public AddressToValue(CParseRule pcx) {
+    public AddressToValue(CParseContext pcx) {
     }
 
     public static boolean isFirst(CToken tk) {

@@ -17,7 +17,15 @@ public class PrimaryMult extends CParseRule {
 
     @Override
     public void parse(CParseContext pcx) throws FatalErrorException {
-
+        final var tokenizer = pcx.getTokenizer();
+        final var token = tokenizer.getNextToken(pcx);
+        if (!Ident.isFirst(token)) {
+            pcx.fatalError(
+                    String.format("[%s]*(ポインタ)演算子の後ろはIdentifierです",
+                            token.toExplainString()));
+        }
+        variable = new Variable(pcx);
+        variable.parse(pcx);
     }
 
     @Override

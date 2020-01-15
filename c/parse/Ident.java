@@ -6,6 +6,7 @@ import lang.c.CParseRule;
 import lang.c.CToken;
 
 public class Ident extends CParseRule {
+    CToken identifier;
     public Ident(CParseContext pcx) {
     }
 
@@ -15,7 +16,13 @@ public class Ident extends CParseRule {
 
     @Override
     public void parse(CParseContext pcx) throws FatalErrorException {
-
+        final var tokenizer = pcx.getTokenizer();
+        final var token = tokenizer.getCurrentToken(pcx);
+        if (token.getType() != CToken.TK_IDENT) {
+            pcx.fatalError("識別子がありません");
+        }
+        identifier = token;
+        tokenizer.getNextToken(pcx);
     }
 
     @Override

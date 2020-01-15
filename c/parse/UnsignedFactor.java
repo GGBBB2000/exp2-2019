@@ -46,8 +46,11 @@ public class UnsignedFactor extends CParseRule {
             } else {
                 pcx.fatalError(token.toExplainString() + "TK_LPARの後ろはExpressionです");
             }
-        } else {
+        } else if (token.getType() == CToken.TK_NUM) {
             unsignedFactor = new Number(pcx);
+            unsignedFactor.parse(pcx);
+        } else {
+            unsignedFactor = new AddressToValue(pcx);
             unsignedFactor.parse(pcx);
         }
         // factor.parse(pcx);

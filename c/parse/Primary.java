@@ -17,6 +17,14 @@ public class Primary extends CParseRule {
 
     @Override
     public void parse(CParseContext pcx) throws FatalErrorException {
+        final var tokenizer = pcx.getTokenizer();
+        final var token = tokenizer.getCurrentToken(pcx);
+        if (token.getType() == CToken.TK_MUL) {
+            multVariable = new PrimaryMult(pcx);
+        } else {
+            multVariable = new Variable(pcx);
+        }
+        multVariable.parse(pcx);
     }
 
     @Override
