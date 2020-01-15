@@ -41,7 +41,6 @@ public class Term extends CParseRule {
 
         System.out.print("Term(");
         if (termMulDiv.size() >= 2) {
-            //TODO  ()ある時無いとき
             var isMulDivConstant = false;
             for (var i = 0; i + 1 <= termMulDiv.size() - 1; i++) {
                 var left = termMulDiv.get(i);
@@ -73,6 +72,16 @@ public class Term extends CParseRule {
         PrintStream o = pcx.getIOContext().getOutStream();
         o.println(";;; term starts");
         //if (factor != null) { factor.codeGen(pcx); }
+        if (termMulDiv != null) {
+            termMulDiv.stream()
+                    .forEach(term -> {
+                        try {
+                            term.codeGen(pcx);
+                        } catch (FatalErrorException e) {
+                            e.printStackTrace();
+                        }
+                    });
+        }
         o.println(";;; term completes");
     }
 }

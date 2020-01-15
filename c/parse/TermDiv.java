@@ -28,8 +28,13 @@ public class TermDiv extends CParseRule {
 
     public void codeGen(CParseContext pcx) throws FatalErrorException {
         PrintStream o = pcx.getIOContext().getOutStream();
-        o.println(";;; termDivstarts");
-        if (factor != null) { factor.codeGen(pcx); }
-        o.println(";;; termDivcompletes");
+        o.println(";;; termDiv starts");
+        if (factor != null) {
+            factor.codeGen(pcx);
+            o.println("\tJSR\tDIV\t; TermDiv:");
+            o.println("\tSUB\t#2, R6\t; TermDiv:");
+            o.println("\tMOV\tR0, (R6)+\t; TermDiv:");
+        }
+        o.println(";;; termDiv completes");
     }
 }

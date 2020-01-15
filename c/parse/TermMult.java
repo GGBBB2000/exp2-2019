@@ -38,7 +38,12 @@ public class TermMult extends CParseRule {
     public void codeGen(CParseContext pcx) throws FatalErrorException {
         PrintStream o = pcx.getIOContext().getOutStream();
         o.println(";;; termMult starts");
-        if (factor != null) { factor.codeGen(pcx); }
+        if (factor != null) {
+            factor.codeGen(pcx);
+            o.println("\tJSR\tMUL\t; TermMul:");
+            o.println("\tSUB\t#2, R6\t; TermMul:");
+            o.println("\tMOV\tR0, (R6)+\t; TermMul:");
+        }
         o.println(";;; termMult completes");
     }
 }

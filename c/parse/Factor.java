@@ -19,13 +19,6 @@ public class Factor extends CParseRule {
         // ここにやってくるときは、必ずisFirst()が満たされている
         var ct = pcx.getTokenizer();
         var token = ct.getCurrentToken(pcx);
-        // if (token.getType() == CToken.TK_AMP) {
-        //     factor = new FactorAmp(pcx);
-        // } else if(token.getType() == CToken.TK_LPAR){
-        //     factor = new UnsignedFactor(pcx);
-        // } else {
-        //     factor = new Number(pcx);
-        // }
         switch (token.getType()) {
             case CToken.TK_PLUS:
                 factor = new PlusFactor(pcx);

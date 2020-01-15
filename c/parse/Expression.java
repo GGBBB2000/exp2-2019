@@ -25,7 +25,6 @@ public class Expression extends CParseRule {
 
         while (ExpressionAdd.isFirst(tk)
                 || ExpressionSub.isFirst(tk)) {
-            System.out.println("hogehoge" +tk.toExplainString());
             if (tk.getType() == CToken.TK_PLUS) {
                 list = new ExpressionAdd(pcx, term);
             } else {
