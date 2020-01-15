@@ -1,4 +1,4 @@
-miniC ver03
+miniC ver04
 program ::= expression EOF
 expression ::= term { expressionAdd | expressionSub }
 expressionAdd ::= PLUS term
@@ -11,7 +11,13 @@ termDiv ::= DIV factor
 factor ::= plusFactor | minusFactor | unsignedFactor
 plusFactor ::= PLUS unsignedFactor
 minusFactor ::= MINUS unsignedFactor
-unsignedFactor ::= factorAmp | number | LPAR expression RPAR
-factorAmp := AMP number //AMP = '&'
+unsignedFactor ::= factorAmp | number | LPAR expression RPAR | addrresToValue
+addressToValue := primary
+factorAmp := AMP (number | primary) //AMP = '&'
+primary := primaryMult | variable
+primaryMult := MULT variable
+variable := ident [ array ]
+array := LBRA expression RBRA
+ident := IDENT
 number ::= NUM
 
