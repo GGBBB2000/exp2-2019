@@ -112,7 +112,19 @@ public class CTokenizer extends Tokenizer<CToken, CParseContext> {
                         startCol = colNo - 1;
                         text.append(ch);
                         state = 14;
-                    } else {			// ヘンな文字を読んだ
+                    } else if (ch == '[') {
+                        startCol = colNo - 1;
+                        text.append(ch);
+                        state = 16;
+                    } else if (ch == ']') {
+                        startCol = colNo - 1;
+                        text.append(ch);
+                        state = 17;
+                    } else if ((ch >= 'a' && ch <= 'z') || (ch >= 'A' && ch <= 'Z')) {
+                        startCol = colNo - 1;
+                        text.append(ch);
+                        state = 18;
+                    } else {            // ヘンな文字を読んだ
                         startCol = colNo - 1;
                         text.append(ch);
                         state = 2;
@@ -134,7 +146,7 @@ public class CTokenizer extends Tokenizer<CToken, CParseContext> {
                     } else {
                         // 数の終わり
                         if (Math.
-                            abs(Integer.decode(text.toString()).intValue()) >= 0xFFFF) {
+                                abs(Integer.decode(text.toString())) >= 0xFFFF) {
                             tk = new CToken(CToken.TK_ILL, lineNo, startCol, text.toString());
                         } else {
                             backChar(ch);
@@ -170,25 +182,12 @@ public class CTokenizer extends Tokenizer<CToken, CParseContext> {
                     }
                     break;
 
-                case 15: 
-                    ch = readChar();
-                    if (ch == ' ') {}
-                    else if (Character.isDigit(ch)) {
-                        backChar(ch);
-                        tk = new CToken(CToken.TK_DIV, lineNo, startCol, "/");
-                        accept = true;
-                    } else { 
-                        text.append(ch);
-                        state = 2;
-                    }
-                    break;
-
                 case 7: // <- このタイプのコメントの解析
                     ch = readChar();
                     if (ch == '\n') {
                         state = 0;
                         text = new StringBuffer();
-                    } else if (ch == - 1) {
+                    } else if (ch == (char) -1) {
                         backChar(ch);
                         state = 1;
                     } 
@@ -242,6 +241,36 @@ public class CTokenizer extends Tokenizer<CToken, CParseContext> {
                     tk = new CToken(CToken.TK_RPAR, lineNo, startCol, ")");
                     accept = true;
                     break;
+                case 15: // 割り算
+                    ch = readChar();
+                    if (ch == ' ') {
+                    } else if (Character.isDigit(ch)) {
+                        backChar(ch);
+                        tk = new CToken(CToken.TK_DIV, lineNo, startCol, "/");
+                        accept = true;
+                    } else {
+                        text.append(ch);
+                        state = 2;
+                    }
+                    break;
+                case 16: // ( を読んだ
+                    tk = new CToken(CToken.TK_LBRA, lineNo, startCol, "[");
+                    accept = true;
+                    break;
+                case 17: // ) を読んだ
+                    tk = new CToken(CToken.TK_RBRA, lineNo, startCol, "]");
+                    accept = true;
+                    break;
+                case 18: // IDENTを読む
+                    ch = readChar();
+                    if ((ch >= 'a' && ch <= 'z') || (ch >= 'A' && ch <= 'Z')) {
+                        text.append(ch);
+                    } else {
+                        backChar(ch);
+                        tk = new CToken(CToken.TK_IDENT, lineNo, startCol, text.toString());
+                        accept = true;
+                        break;
+                    }
             }
             //System.out.println(state);
         }
