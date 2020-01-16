@@ -4,6 +4,7 @@ import lang.FatalErrorException;
 import lang.c.CParseContext;
 import lang.c.CParseRule;
 import lang.c.CToken;
+import lang.c.CType;
 
 public class Ident extends CParseRule {
     CToken identifier;
@@ -27,7 +28,11 @@ public class Ident extends CParseRule {
 
     @Override
     public void semanticCheck(CParseContext pcx) throws FatalErrorException {
-
+        if (identifier != null) {
+            System.out.print("IDent ");
+            this.setCType(CType.getCType(CType.T_pint));
+            this.setConstant(false);
+        }
     }
 
     @Override

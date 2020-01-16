@@ -8,14 +8,15 @@ import java.io.PrintStream;
 
 public class CTokenizer extends Tokenizer<CToken, CParseContext> {
     @SuppressWarnings("unused")
-    private CTokenRule	rule;
-    private int			lineNo, colNo;
-    private char		backCh;
-    private boolean		backChExist = false;
+    private CTokenRule rule;
+    private int lineNo, colNo;
+    private char backCh;
+    private boolean backChExist = false;
 
     public CTokenizer(CTokenRule rule) {
         this.rule = rule;
-        lineNo = 1; colNo = 1;
+        lineNo = 1;
+        colNo = 1;
     }
 
     private InputStream in;
@@ -35,22 +36,30 @@ public class CTokenizer extends Tokenizer<CToken, CParseContext> {
             }
         }
         ++colNo;
-        if (ch == '\n')  { colNo = 1; ++lineNo; }
+        if (ch == '\n') {
+            colNo = 1;
+            ++lineNo;
+        }
         //System.out.print("'"+ch+"'("+(int)ch+")");
         return ch;
     }
+
     private void backChar(char c) {
         backCh = c;
         backChExist = true;
         --colNo;
-        if (c == '\n') { --lineNo; }
+        if (c == '\n') {
+            --lineNo;
+        }
     }
 
     // 現在読み込まれているトークンを返す
     private CToken currentTk = null;
+
     public CToken getCurrentToken(CParseContext pctx) {
         return currentTk;
     }
+
     // 次のトークンを読んで返す
     public CToken getNextToken(CParseContext pctx) {
         in = pctx.getIOContext().getInStream();
@@ -59,10 +68,11 @@ public class CTokenizer extends Tokenizer<CToken, CParseContext> {
         //		System.out.println("Token='" + currentTk.toString());
         return currentTk;
     }
+
     private CToken readToken() {
         CToken tk = null;
         char ch;
-        int  startCol = colNo;
+        int startCol = colNo;
         boolean isHex = false;
         StringBuffer text = new StringBuffer();
 
@@ -70,10 +80,10 @@ public class CTokenizer extends Tokenizer<CToken, CParseContext> {
         boolean accept = false;
         while (!accept) {
             switch (state) {
-                case 0:					// 初期状態
+                case 0:                    // 初期状態
                     ch = readChar();
                     if (ch == ' ' || ch == '\t' || ch == '\n' || ch == '\r') {
-                    } else if (ch == (char) -1) {	// EOF
+                    } else if (ch == (char) -1) {    // EOF
                         startCol = colNo - 1;
                         state = 1;
                     } else if (ch == '0') {
@@ -88,7 +98,7 @@ public class CTokenizer extends Tokenizer<CToken, CParseContext> {
                         startCol = colNo - 1;
                         text.append(ch);
                         state = 4;
-                    } else if (ch == '-') { 
+                    } else if (ch == '-') {
                         startCol = colNo - 1;
                         text.append(ch);
                         state = 5;
@@ -130,18 +140,18 @@ public class CTokenizer extends Tokenizer<CToken, CParseContext> {
                         state = 2;
                     }
                     break;
-                case 1:					// EOFを読んだ
+                case 1:                    // EOFを読んだ
                     tk = new CToken(CToken.TK_EOF, lineNo, startCol, "end_of_file");
                     accept = true;
                     break;
-                case 2:					// ヘンな文字を読んだ
+                case 2:                    // ヘンな文字を読んだ
                     tk = new CToken(CToken.TK_ILL, lineNo, startCol, text.toString());
                     accept = true;
                     break;
-                case 3:					// 数（10進数）の開始
+                case 3:                    // 数（10進数）の開始
                     ch = readChar();
                     if (Character.isDigit(ch) ||
-                        (isHex && ((ch >= 'a' && ch <= 'f') || (ch >= 'A' && ch <= 'F')))) {
+                            (isHex && ((ch >= 'a' && ch <= 'f') || (ch >= 'A' && ch <= 'F')))) {
                         text.append(ch);
                     } else {
                         // 数の終わり
@@ -155,7 +165,7 @@ public class CTokenizer extends Tokenizer<CToken, CParseContext> {
                         accept = true;
                     }
                     break;
-                case 4:					// +を読んだ
+                case 4:                    // +を読んだ
                     tk = new CToken(CToken.TK_PLUS, lineNo, startCol, "+");
                     accept = true;
                     break;
@@ -173,7 +183,8 @@ public class CTokenizer extends Tokenizer<CToken, CParseContext> {
                         state = 8;
                     } else if (ch == ' ') {
                         state = 15;
-                    } else if (Character.isDigit(ch)){
+                    } else if (Character.isDigit(ch)
+                            || (ch >= 'a' && ch <= 'z') || (ch >= 'A' && ch <= 'Z')) {
                         backChar(ch);
                         tk = new CToken(CToken.TK_DIV, lineNo, startCol, "/");
                     } else { //このままだと割り算できない
@@ -190,23 +201,23 @@ public class CTokenizer extends Tokenizer<CToken, CParseContext> {
                     } else if (ch == (char) -1) {
                         backChar(ch);
                         state = 1;
-                    } 
+                    }
                     break;
 
                 case 8: /* コメント本文の解析(*で違う状態へ) */
                     ch = readChar();
                     if (ch == '*') {
                         state = 9;
-                    } else if(ch == (char) -1) {
+                    } else if (ch == (char) -1) {
                         state = 2;
                     }
                     text.append(ch);
                     break;
                 case 9: /* コメントのこれの解析 -> */
                     ch = readChar();
-                    if(ch == '*') {
+                    if (ch == '*') {
                         text.append(ch);
-                    } else if(ch == '/') {
+                    } else if (ch == '/') {
                         state = 0;
                         text = new StringBuffer();
                     } else {
@@ -246,7 +257,8 @@ public class CTokenizer extends Tokenizer<CToken, CParseContext> {
                 case 15: // 割り算
                     ch = readChar();
                     if (ch == ' ') {
-                    } else if (Character.isDigit(ch)) {
+                    } else if (Character.isDigit(ch)
+                            || (ch >= 'a' && ch <= 'z') || (ch >= 'A' && ch <= 'Z')) {
                         backChar(ch);
                         tk = new CToken(CToken.TK_DIV, lineNo, startCol, "/");
                         accept = true;

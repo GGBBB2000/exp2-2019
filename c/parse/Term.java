@@ -1,9 +1,9 @@
 package lang.c.parse;
 
-import java.io.PrintStream;
-
-import lang.*;
+import lang.FatalErrorException;
 import lang.c.*;
+
+import java.io.PrintStream;
 import java.util.ArrayList;
 
 public class Term extends CParseRule {
@@ -49,9 +49,9 @@ public class Term extends CParseRule {
                 right.semanticCheck(pcx);
                 var leftType = left.getCType().getType();
                 var rightType = right.getCType().getType();
-                var result = leftType & rightType;
+                var result = leftType * rightType;
                 if (result != CType.T_int) {
-                    pcx.fatalError("乗除算にはポインタを用いることができません:");
+                    pcx.fatalError("乗除算にはポインタまたはarrayを用いることができません:");
                 }
                 isMulDivConstant = left.isConstant() & right.isConstant();
             }

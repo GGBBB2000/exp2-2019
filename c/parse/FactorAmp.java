@@ -1,18 +1,16 @@
 package lang.c.parse;
 
-import java.io.PrintStream;
-
-import lang.*;
+import lang.FatalErrorException;
 import lang.c.*;
 
 public class FactorAmp extends CParseRule {
     // factor ::= number
     private CToken op;
-    private CParseRule number;
+    private CParseRule numberPrimary;
     public FactorAmp(CParseContext pcx) {
     }
     public static boolean isFirst(CToken tk) {
-            return tk.getType() == CToken.TK_AMP;//&が最初か
+        return tk.getType() == CToken.TK_AMP;//&が最初か
     }
     public void parse(CParseContext pcx) throws FatalErrorException {
         // ここにやってくるときは、必ずisFirst()が満たされている
@@ -20,25 +18,47 @@ public class FactorAmp extends CParseRule {
         op = ct.getCurrentToken(pcx);
         // &の次の字句を読む
         CToken tk = ct.getNextToken(pcx);
-        
-        if (Number.isFirst(tk)) {
-            number = new Number(pcx);
-            number.parse(pcx);
+
+        if (tk.getType() == CToken.TK_NUM) {
+            numberPrimary = new Number(pcx);
+        } else if (tk.getType() == CToken.TK_IDENT) {
+            numberPrimary = new Primary(pcx);
         } else {
-            pcx.fatalError(tk.toExplainString() + "&の後ろはNumberです");
+            pcx.fatalError(tk.toExplainString() + "&の後ろはNumberかPrimaryです");
         }
+        numberPrimary.parse(pcx);
     }
 
     public void semanticCheck(CParseContext pcx) throws FatalErrorException {
         System.out.print("AMP ");
-        if (number != null) {
-            number.semanticCheck(pcx);
-            this.setCType(CType.getCType(CType.T_pint));
-            this.setConstant(number.isConstant());	// number は常に定数
+        if (numberPrimary != null) {
+            if (numberPrimary instanceof Primary) {
+                if (((Primary) numberPrimary).hasMultPrimary) {
+                    pcx.fatalError("&の後ろに*は付けられません");
+                }
+            }
+            numberPrimary.semanticCheck(pcx);
+            final var type = numberPrimary.getCType().getType();
+            int res = 0;
+            switch (type) {
+                case CType.T_int:
+                    res = CType.T_pint;
+                    break;
+                case CType.T_int_arr:
+                    res = CType.T_pint_arr;
+                    break;
+                case CType.T_pint:
+                    res = CType.T_pint;
+                    break;
+                default:
+                    pcx.fatalError(type + "不正な型です");
+            }
+            this.setCType(CType.getCType(res));
+            this.setConstant(numberPrimary.isConstant());    // number は常に定数
         }
     }
 
     public void codeGen(CParseContext pcx) throws FatalErrorException {
-        number.codeGen(pcx);
+        numberPrimary.codeGen(pcx);
     }
 }

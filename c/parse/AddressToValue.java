@@ -23,7 +23,11 @@ public class AddressToValue extends CParseRule {
 
     @Override
     public void semanticCheck(CParseContext pcx) throws FatalErrorException {
-
+        if (primary != null) {
+            primary.semanticCheck(pcx);
+            this.setCType(primary.getCType());
+            this.setConstant(false);
+        }
     }
 
     @Override

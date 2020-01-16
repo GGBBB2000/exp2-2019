@@ -4,6 +4,7 @@ import lang.FatalErrorException;
 import lang.c.CParseContext;
 import lang.c.CParseRule;
 import lang.c.CToken;
+import lang.c.CType;
 
 public class PrimaryMult extends CParseRule {
     CParseRule variable;
@@ -30,7 +31,16 @@ public class PrimaryMult extends CParseRule {
 
     @Override
     public void semanticCheck(CParseContext pcx) throws FatalErrorException {
-
+        if (variable != null) {
+            variable.semanticCheck(pcx);
+            final var type = variable.getCType().getType();
+            if (type == CType.T_int) {
+                pcx.fatalError("数値はデリファレンスできません");
+            } else if (type == CType.T_pint) {
+                this.setCType(CType.getCType(CType.T_int));
+            }
+            this.setConstant(false);
+        }
     }
 
     @Override
