@@ -224,9 +224,11 @@ public class CTokenizer extends Tokenizer<CToken, CParseContext> {
                         isHex = true;
                         text.append(ch);
                         state = 3;
-                    } else { 
+                    } else {
+
                         backChar(ch);
-                        state = 2;
+                        tk = new CToken(CToken.TK_NUM, lineNo, startCol, text.toString());
+                        accept = true;
                     }
                     break;
                 case 12: // * を読んだ
