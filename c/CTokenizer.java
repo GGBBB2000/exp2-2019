@@ -1,10 +1,10 @@
 package lang.c;
 
+import lang.Tokenizer;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.PrintStream;
-
-import lang.*;
 
 public class CTokenizer extends Tokenizer<CToken, CParseContext> {
     @SuppressWarnings("unused")
@@ -263,7 +263,8 @@ public class CTokenizer extends Tokenizer<CToken, CParseContext> {
                     break;
                 case 18: // IDENTを読む
                     ch = readChar();
-                    if ((ch >= 'a' && ch <= 'z') || (ch >= 'A' && ch <= 'Z')) {
+                    if ((ch >= 'a' && ch <= 'z') || (ch >= 'A' && ch <= 'Z')
+                            || (ch >= '0' && ch <= '9')) {
                         text.append(ch);
                     } else {
                         backChar(ch);
