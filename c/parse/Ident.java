@@ -30,7 +30,7 @@ public class Ident extends CParseRule {
     public void semanticCheck(CParseContext pcx) throws FatalErrorException {
         if (identifier != null) {
             System.out.print("IDent ");
-            this.setCType(CType.getCType(CType.T_pint));
+            this.setCType(CType.getCType(CType.T_pint_arr));
             this.setConstant(false);
         }
     }

@@ -44,10 +44,13 @@ public class Variable extends CParseRule {
         if (ident != null) {
             System.out.print("Variable (");
             ident.semanticCheck(pcx);
+            final var isIntArr = ident.getCType().getType() == CType.T_int_arr;
+            final var isPIntArr = ident.getCType().getType() == CType.T_pint_arr;
             array.ifPresentOrElse(
                     arr -> {
                         try {
-                            if (ident.getCType().getType() != CType.T_int_arr) {
+
+                            if (!isIntArr && !isPIntArr) {
                                 pcx.fatalError("Identが配列型ではありません");
                             }
                             System.out.print("Array[ ");
@@ -55,15 +58,18 @@ public class Variable extends CParseRule {
                             if (arr.getCType().getType() != CType.T_int) {
                                 pcx.fatalError("配列のインデックスにはintしか使えません");
                             }
-                            this.setCType(CType.getCType(CType.T_int));
-
+                            if (isIntArr) {
+                                this.setCType(CType.getCType(CType.T_int));
+                            } else {
+                                this.setCType(CType.getCType(CType.T_pint));
+                            }
                             System.out.print("] ");
                         } catch (FatalErrorException e) {
                             e.printStackTrace();
                         }
                     },
                     () -> {
-                        if (ident.getCType().getType() == CType.T_int_arr) {
+                        if (isIntArr || isPIntArr) {
                             try {
                                 pcx.fatalError("arrayにインデックスが指定されていません");
                             } catch (FatalErrorException e) {
