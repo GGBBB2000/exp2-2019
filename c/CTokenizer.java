@@ -194,13 +194,15 @@ public class CTokenizer extends Tokenizer<CToken, CParseContext> {
                     } else if (ch == (char) -1) {
                         backChar(ch);
                         state = 0;
-                    } else if (Character.isDigit(ch)
+                    } /*else if (Character.isDigit(ch)
                             || (ch >= 'a' && ch <= 'z') || (ch >= 'A' && ch <= 'Z')) {
                         backChar(ch);
                         tk = new CToken(CToken.TK_DIV, lineNo, startCol, "/");
-                    } else {
-                        text.append(ch);
-                        state = 2;
+                    } */ else {
+                        //text.append(ch);
+                        accept = true;
+                        backChar(ch);
+                        tk = new CToken(CToken.TK_DIV, lineNo, startCol, "/");
                     }
                     break;
 
