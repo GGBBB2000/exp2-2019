@@ -83,6 +83,7 @@ public class CTokenizer extends Tokenizer<CToken, CParseContext> {
                 case 0:                    // 初期状態
                     ch = readChar();
                     if (ch == ' ' || ch == '\t' || ch == '\n' || ch == '\r') {
+                        state = 0;
                     } else if (ch == (char) -1) {    // EOF
                         startCol = colNo - 1;
                         state = 1;
@@ -134,6 +135,8 @@ public class CTokenizer extends Tokenizer<CToken, CParseContext> {
                         startCol = colNo - 1;
                         text.append(ch);
                         state = 18;
+                    } else if (ch == '=') {
+                        state = 19;
                     } else {            // ヘンな文字を読んだ
                         startCol = colNo - 1;
                         text.append(ch);
@@ -179,15 +182,19 @@ public class CTokenizer extends Tokenizer<CToken, CParseContext> {
                         text.append(ch);
                         state = 7;
                     } else if (ch == '*') {
+                        startCol = colNo - 1;
                         text.append(ch);
                         state = 8;
                     } else if (ch == ' ') {
                         state = 15;
+                    } else if (ch == (char) -1) {
+                        backChar(ch);
+                        state = 0;
                     } else if (Character.isDigit(ch)
                             || (ch >= 'a' && ch <= 'z') || (ch >= 'A' && ch <= 'Z')) {
                         backChar(ch);
                         tk = new CToken(CToken.TK_DIV, lineNo, startCol, "/");
-                    } else { //このままだと割り算できない
+                    } else {
                         text.append(ch);
                         state = 2;
                     }
@@ -232,6 +239,7 @@ public class CTokenizer extends Tokenizer<CToken, CParseContext> {
                 case 11: // 16/8進数を読む
                     ch = readChar();
                     if (ch == 'x' || (ch >= '0' && ch <= '9')) {
+                        startCol = colNo - 1;
                         isHex = true;
                         text.append(ch);
                         state = 3;
