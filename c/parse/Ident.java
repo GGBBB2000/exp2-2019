@@ -20,6 +20,7 @@ public class Ident extends CParseRule {
         final var tokenizer = pcx.getTokenizer();
         final var token = tokenizer.getCurrentToken(pcx);
         if (token.getType() != CToken.TK_IDENT) {
+            System.out.println("\n" + token.getType());
             pcx.fatalError("識別子がありません");
         }
         identifier = token;
@@ -30,7 +31,7 @@ public class Ident extends CParseRule {
     public void semanticCheck(CParseContext pcx) throws FatalErrorException {
         if (identifier != null) {
             System.out.print("IDent ");
-            this.setCType(CType.getCType(CType.T_pint_arr));
+            this.setCType(CType.getCType(CType.T_int_arr));
             this.setConstant(false);
         }
     }
