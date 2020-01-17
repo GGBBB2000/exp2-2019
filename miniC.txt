@@ -1,5 +1,7 @@
-miniC ver04
-program ::= expression EOF
+miniC ver05
+program ::= {statement} EOF
+statement ::= statementAssign
+statementAssign := primary ASSIGN expression SEMI //ASSIGN->"=" SEMI->";"
 expression ::= term { expressionAdd | expressionSub }
 expressionAdd ::= PLUS term
 expressionSub ::= MINUS term
