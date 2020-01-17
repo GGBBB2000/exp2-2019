@@ -294,6 +294,7 @@ public class CTokenizer extends Tokenizer<CToken, CParseContext> {
                         accept = true;
                         break;
                     }
+                    break;
             }
             //System.out.println(state);
         }
