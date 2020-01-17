@@ -158,14 +158,18 @@ public class CTokenizer extends Tokenizer<CToken, CParseContext> {
                         text.append(ch);
                     } else {
                         // 数の終わり
-                        if (Math.
-                                abs(Integer.decode(text.toString())) >= 0xFFFF) {
-                            tk = new CToken(CToken.TK_ILL, lineNo, startCol, text.toString());
-                        } else {
-                            backChar(ch);
-                            tk = new CToken(CToken.TK_NUM, lineNo, startCol, text.toString());
+                        try {
+                            if (Math.
+                                    abs(Integer.decode(text.toString())) > 0xFFFF) {
+                                tk = new CToken(CToken.TK_ILL, lineNo, startCol, text.toString());
+                            } else {
+                                backChar(ch);
+                                tk = new CToken(CToken.TK_NUM, lineNo, startCol, text.toString());
+                            }
+                            accept = true;
+                        } catch (NumberFormatException e) {
+                            state = 2;
                         }
-                        accept = true;
                     }
                     break;
                 case 4:                    // +を読んだ
