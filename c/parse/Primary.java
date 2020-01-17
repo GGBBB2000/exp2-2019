@@ -5,6 +5,8 @@ import lang.c.CParseContext;
 import lang.c.CParseRule;
 import lang.c.CToken;
 
+import java.io.PrintStream;
+
 public class Primary extends CParseRule {
     CParseRule multVariable;
     public boolean hasMultPrimary = false;
@@ -42,6 +44,11 @@ public class Primary extends CParseRule {
 
     @Override
     public void codeGen(CParseContext pcx) throws FatalErrorException {
-
+        PrintStream o = pcx.getIOContext().getOutStream();
+        o.println(";;; primary starts");
+        if (multVariable != null) {
+            multVariable.codeGen(pcx);
+        }
+        o.println(";;; primary completes");
     }
 }

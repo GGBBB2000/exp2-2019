@@ -6,6 +6,7 @@ import lang.c.CParseRule;
 import lang.c.CToken;
 import lang.c.CType;
 
+import java.io.PrintStream;
 import java.util.Optional;
 
 public class Variable extends CParseRule {
@@ -21,22 +22,16 @@ public class Variable extends CParseRule {
 
     @Override
     public void parse(CParseContext pcx) throws FatalErrorException {
-        final var tokenizer = pcx.getTokenizer();
         ident = new Ident(pcx);
         ident.parse(pcx);
+        final var tokenizer = pcx.getTokenizer();
         var token = tokenizer.getCurrentToken(pcx);
-        CParseRule expression = null;
+        CParseRule tmp_array = null;
         if (token.getType() == CToken.TK_LBRA) {
-            token = tokenizer.getNextToken(pcx);
-            expression = new Expression(pcx);
-            expression.parse(pcx);
-            token = tokenizer.getCurrentToken(pcx);
-            if (token.getType() != CToken.TK_RBRA) {
-                pcx.fatalError("arrayの[]が閉じていません");
-            }
-            tokenizer.getNextToken(pcx);
+            tmp_array = new Array(pcx);
+            tmp_array.parse(pcx);
         }
-        array = Optional.ofNullable(expression);
+        array = Optional.ofNullable(tmp_array);
     }
 
     @Override
@@ -49,21 +44,15 @@ public class Variable extends CParseRule {
             array.ifPresentOrElse(
                     arr -> {
                         try {
-
                             if (!isIntArr && !isPIntArr) {
                                 pcx.fatalError("Identが配列型ではありません");
                             }
-                            System.out.print("Array[ ");
                             arr.semanticCheck(pcx);
-                            if (arr.getCType().getType() != CType.T_int) {
-                                pcx.fatalError("配列のインデックスにはintしか使えません");
-                            }
                             if (isIntArr) {
                                 this.setCType(CType.getCType(CType.T_int));
                             } else {
                                 this.setCType(CType.getCType(CType.T_pint));
                             }
-                            System.out.print("] ");
                         } catch (FatalErrorException e) {
                             e.printStackTrace();
                         }
@@ -86,6 +75,19 @@ public class Variable extends CParseRule {
 
     @Override
     public void codeGen(CParseContext pcx) throws FatalErrorException {
-
+        PrintStream o = pcx.getIOContext().getOutStream();
+        o.println(";;; variable starts");
+        if (ident != null) {
+            ident.codeGen(pcx);
+        }
+        //if (array != null) {array.codeGen(pcx); }
+        array.ifPresent(arr -> {
+            try {
+                arr.codeGen(pcx);
+            } catch (FatalErrorException e) {
+                e.printStackTrace();
+            }
+        });
+        o.println(";;; variable completes");
     }
 }

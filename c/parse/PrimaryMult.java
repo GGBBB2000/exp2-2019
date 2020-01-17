@@ -6,6 +6,8 @@ import lang.c.CParseRule;
 import lang.c.CToken;
 import lang.c.CType;
 
+import java.io.PrintStream;
+
 public class PrimaryMult extends CParseRule {
     CParseRule variable;
 
@@ -45,6 +47,13 @@ public class PrimaryMult extends CParseRule {
 
     @Override
     public void codeGen(CParseContext pcx) throws FatalErrorException {
-
+        PrintStream o = pcx.getIOContext().getOutStream();
+        o.println(";;; primarymult starts");
+        if (variable != null) {
+            variable.codeGen(pcx);
+        }
+        o.println("\tMOV\t-(R6), R0\t; PrimaryMult:番地から値を取り出す");
+        o.println("\tMOV\t(R0), (R6)+\t; PrimaryMult:");
+        o.println(";;; primarymult completes");
     }
 }

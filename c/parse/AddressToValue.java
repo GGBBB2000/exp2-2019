@@ -5,6 +5,8 @@ import lang.c.CParseContext;
 import lang.c.CParseRule;
 import lang.c.CToken;
 
+import java.io.PrintStream;
+
 public class AddressToValue extends CParseRule {
     CParseRule primary;
 
@@ -32,6 +34,13 @@ public class AddressToValue extends CParseRule {
 
     @Override
     public void codeGen(CParseContext pcx) throws FatalErrorException {
-
+        PrintStream o = pcx.getIOContext().getOutStream();
+        o.println(";;; addresstovalue starts");
+        if (primary != null) {
+            primary.codeGen(pcx);
+        }
+        o.println("\tMOV\t-(R6), R0\t; addressToValue:番地から値を取り出す");
+        o.println("\tMOV\t(R0), (R6)+\t; addressToValue:");
+        o.println(";;; addresstovalue completes");
     }
 }

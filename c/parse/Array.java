@@ -57,6 +57,5 @@ public class Array extends CParseRule {
         o.println("\tADD\t-(R6), R0\t; Array:");
         o.println("\tMOV\tR0, (R6)+\t; Array:");
         o.println(";;; array completes");
-
     }
 }

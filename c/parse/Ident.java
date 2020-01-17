@@ -6,8 +6,11 @@ import lang.c.CParseRule;
 import lang.c.CToken;
 import lang.c.CType;
 
+import java.io.PrintStream;
+
 public class Ident extends CParseRule {
     CToken identifier;
+
     public Ident(CParseContext pcx) {
     }
 
@@ -38,6 +41,12 @@ public class Ident extends CParseRule {
 
     @Override
     public void codeGen(CParseContext pcx) throws FatalErrorException {
-
+        PrintStream o = pcx.getIOContext().getOutStream();
+        o.println(";;; ident starts");
+        if (identifier != null) {
+            o.println("\tMOV\t#" + identifier.getText() + ", (R6)+\t; Ident: 変数アドレスを積む<"
+                    + identifier.toExplainString() + ">");
+        }
+        o.println(";;; ident completes");
     }
 }
