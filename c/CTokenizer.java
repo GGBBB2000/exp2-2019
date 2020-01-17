@@ -311,6 +311,10 @@ public class CTokenizer extends Tokenizer<CToken, CParseContext> {
                     tk = new CToken(CToken.TK_ASSIGN, lineNo, startCol, "=");
                     accept = true;
                     break;
+                case 20:
+                    tk = new CToken(CToken.TK_SEMI, lineNo, startCol, ";");
+                    accept = true;
+                    break;
             }
             //System.out.println(state);
         }
