@@ -17,6 +17,8 @@ public class Statement extends CParseRule {
 
     @Override
     public void parse(CParseContext pcx) throws FatalErrorException {
+        statementAssign = new StatementAssign(pcx);
+        statementAssign.parse(pcx);
     }
 
     @Override

@@ -17,7 +17,22 @@ public class StatementAssign extends CParseRule {
 
     @Override
     public void parse(CParseContext pcx) throws FatalErrorException {
+        final var tokenizer = pcx.getTokenizer();
+        primary = new Primary(pcx);
+        primary.parse(pcx);
 
+        var token = tokenizer.getCurrentToken(pcx);
+        if (token.getType() != CToken.TK_ASSIGN) {
+            pcx.fatalError(token.toExplainString() + "primaryの後に=が必要です");
+        }
+        tokenizer.getNextToken(pcx);
+        expression = new Expression(pcx);
+        expression.parse(pcx);
+        token = tokenizer.getCurrentToken(pcx);
+        if (token.getType() != CToken.TK_SEMI) {
+            pcx.fatalError(token.toExplainString() + ";がありません");
+        }
+        tokenizer.getNextToken(pcx);
     }
 
     @Override

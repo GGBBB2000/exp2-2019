@@ -34,7 +34,6 @@ public class Term extends CParseRule {
             mulDiv.parse(pcx);
             termMulDiv.add(mulDiv);
         }
-        System.out.print(termMulDiv.size());
     }
 
     public void semanticCheck(CParseContext pcx) throws FatalErrorException {
