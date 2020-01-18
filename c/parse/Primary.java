@@ -36,7 +36,7 @@ public class Primary extends CParseRule {
         if (multVariable != null) {
             multVariable.semanticCheck(pcx);
             this.setCType(multVariable.getCType());
-            this.setConstant(false);
+            this.setConstant(multVariable.isConstant());
         }
     }
 
