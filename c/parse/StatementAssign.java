@@ -57,6 +57,17 @@ public class StatementAssign extends CParseRule {
 
     @Override
     public void codeGen(CParseContext pcx) throws FatalErrorException {
-
+        final var printStream = pcx.getIOContext().getOutStream();
+        printStream.println(";;; StatementAssign starts");
+        if (primary != null) {
+            primary.codeGen(pcx);
+        }
+        if (expression != null) {
+            expression.codeGen(pcx);
+        }
+        printStream.println("\tMOV\t-(R6), R1\t; StatementAssign: Expressionの値を取り出す");
+        printStream.println("\tMOV\t-(R6), R0\t; StatementAssign: 変数のアドレスを取り出す");
+        printStream.println("\tMOV\t   R1, (R0)\t; StatementAssign: 変数に値を代入する");
+        printStream.println(";;; StatementAssign completes");
     }
 }

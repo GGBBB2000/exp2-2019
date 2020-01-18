@@ -58,7 +58,7 @@ public class Program extends CParseRule {
             //statement.codeGen(pcx);
             statement.forEach(s -> {
                 try {
-                    s.semanticCheck(pcx);
+                    s.codeGen(pcx);
                 } catch (FatalErrorException e) {
                     e.printStackTrace();
                 }

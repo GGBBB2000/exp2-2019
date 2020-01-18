@@ -30,6 +30,11 @@ public class Statement extends CParseRule {
 
     @Override
     public void codeGen(CParseContext pcx) throws FatalErrorException {
-
+        final var printStream = pcx.getIOContext().getOutStream();
+        printStream.println(";;; Statement starts");
+        if (statementAssign != null) {
+            statementAssign.codeGen(pcx);
+        }
+        printStream.println(";;; Statement completes");
     }
 }
