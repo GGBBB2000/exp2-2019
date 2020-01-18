@@ -1,9 +1,9 @@
 package lang.c.parse;
 
-import java.io.PrintStream;
-
-import lang.*;
+import lang.FatalErrorException;
 import lang.c.*;
+
+import java.io.PrintStream;
 
 public class TermMult extends CParseRule {
     // term ::= factor
@@ -22,7 +22,6 @@ public class TermMult extends CParseRule {
     }
 
     public void semanticCheck(CParseContext pcx) throws FatalErrorException {
-        System.out.print("MULT Factor(");
         if (factor != null) {
             factor.semanticCheck(pcx);
             var type = factor.getCType().getType();
@@ -32,7 +31,6 @@ public class TermMult extends CParseRule {
             this.setCType(factor.getCType());		// factor の型をそのままコピー
             this.setConstant(factor.isConstant());
         }
-        System.out.print(")");
     }
 
     public void codeGen(CParseContext pcx) throws FatalErrorException {

@@ -33,9 +33,8 @@ public class Ident extends CParseRule {
     @Override
     public void semanticCheck(CParseContext pcx) throws FatalErrorException {
         if (identifier != null) {
-            System.out.print("IDent ");
-            this.setCType(CType.getCType(CType.T_int_arr));
-            this.setConstant(false);
+            this.setCType(CType.getCType(CType.T_int));
+            this.setConstant(true);
         }
     }
 

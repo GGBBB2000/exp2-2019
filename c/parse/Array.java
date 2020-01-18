@@ -34,7 +34,6 @@ public class Array extends CParseRule {
     @Override
     public void semanticCheck(CParseContext pcx) throws FatalErrorException {
         if (expression != null) {
-            System.out.print("Array[ ");
             expression.semanticCheck(pcx);
             final var cType = expression.getCType();
             if (cType.getType() != CType.T_int) {
@@ -42,7 +41,6 @@ public class Array extends CParseRule {
             }
             this.setCType(cType);
             this.setConstant(expression.isConstant());
-            System.out.print("] ");
         }
     }
 

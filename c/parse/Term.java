@@ -38,7 +38,6 @@ public class Term extends CParseRule {
 
     public void semanticCheck(CParseContext pcx) throws FatalErrorException {
 
-        System.out.print("Term(");
         if (termMulDiv.size() >= 2) {
             var isMulDivConstant = false;
             for (var i = 0; i + 1 <= termMulDiv.size() - 1; i++) {
@@ -64,7 +63,6 @@ public class Term extends CParseRule {
         } else {
             pcx.fatalError("MULT/DIVの後ろにfactorがありません");
         }
-        System.out.print(")");
     }
 
     public void codeGen(CParseContext pcx) throws FatalErrorException {

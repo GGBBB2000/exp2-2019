@@ -40,13 +40,11 @@ public class Expression extends CParseRule {
     }
 
     public void semanticCheck(CParseContext pcx) throws FatalErrorException {
-        System.out.print("Expression(");
         if (expression != null) {
             expression.semanticCheck(pcx);
             this.setCType(expression.getCType());        // expression の型をそのままコピー
             this.setConstant(expression.isConstant());
         }
-        System.out.print(")");
     }
 
     public void codeGen(CParseContext pcx) throws FatalErrorException {
@@ -100,10 +98,8 @@ class ExpressionAdd extends CParseRule {
                 {CType.T_err, CType.T_err, CType.T_err, CType.T_err, CType.T_err},   // T_int_arr
                 {CType.T_err, CType.T_err, CType.T_err, CType.T_err, CType.T_err}   // T_pint_arr
         };
-        System.out.print("ExpressionAdd( ");
         if (left != null && right != null) {
             left.semanticCheck(pcx);
-            System.out.print(" PLUS ");
             right.semanticCheck(pcx);
             int lt = left.getCType().getType();        // +の左辺の型
             int rt = right.getCType().getType();    // +の右辺の型
@@ -114,7 +110,6 @@ class ExpressionAdd extends CParseRule {
             this.setCType(CType.getCType(nt));
             this.setConstant(left.isConstant() && right.isConstant());    // +の左右両方が定数のときだけ定数
         }
-        System.out.print(")");
     }
 
     public void codeGen(CParseContext pcx) throws FatalErrorException {
@@ -168,9 +163,7 @@ class ExpressionSub extends CParseRule {
                 {CType.T_err, CType.T_err, CType.T_err, CType.T_err, CType.T_err}   // T_pint_arr
         };
         if (left != null && right != null) {
-            System.out.print("ExpressionSub( ");
             left.semanticCheck(pcx);
-            System.out.print(" MINUS ");
             right.semanticCheck(pcx);
             int lt = left.getCType().getType();        // -の左辺の型
             int rt = right.getCType().getType();    // -の右辺の型
@@ -180,7 +173,6 @@ class ExpressionSub extends CParseRule {
             }
             this.setCType(CType.getCType(nt));
             this.setConstant(left.isConstant() && right.isConstant());    // -の左右両方が定数のときだけ定数
-            System.out.print(") ");
         }
     }
 

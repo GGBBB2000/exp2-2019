@@ -1,10 +1,13 @@
 
 package lang.c.parse;
 
-import java.io.PrintStream;
+import lang.FatalErrorException;
+import lang.c.CParseContext;
+import lang.c.CParseRule;
+import lang.c.CToken;
+import lang.c.CTokenizer;
 
-import lang.*;
-import lang.c.*;
+import java.io.PrintStream;
 
 public class PlusFactor extends CParseRule {
     private CParseRule unsignedFactor;
@@ -26,7 +29,6 @@ public class PlusFactor extends CParseRule {
     }
 
     public void semanticCheck(CParseContext pcx) throws FatalErrorException {
-        System.out.print("PLUS ");
         if (unsignedFactor != null) {
             unsignedFactor.semanticCheck(pcx);
             this.setCType(unsignedFactor.getCType());		// unsignedFactor の型をそのままコピー

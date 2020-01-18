@@ -1,9 +1,11 @@
 package lang.c.parse;
 
-import java.io.PrintStream;
+import lang.FatalErrorException;
+import lang.c.CParseContext;
+import lang.c.CParseRule;
+import lang.c.CToken;
 
-import lang.*;
-import lang.c.*;
+import java.io.PrintStream;
 
 public class Factor extends CParseRule {
     // factor ::= factorAmp | number
@@ -34,13 +36,11 @@ public class Factor extends CParseRule {
     }
 
     public void semanticCheck(CParseContext pcx) throws FatalErrorException {
-        System.out.print("Factor(");
         if (factor != null) {
             factor.semanticCheck(pcx);
             setCType(factor.getCType());		// numberの型をそのままコピー
             setConstant(factor.isConstant());	// factor は常に定数
         }
-        System.out.print(")");
     }
 
     public void codeGen(CParseContext pcx) throws FatalErrorException {

@@ -37,7 +37,6 @@ public class Variable extends CParseRule {
     @Override
     public void semanticCheck(CParseContext pcx) throws FatalErrorException {
         if (ident != null) {
-            System.out.print("Variable (");
             ident.semanticCheck(pcx);
             final var isIntArr = ident.getCType().getType() == CType.T_int_arr;
             final var isPIntArr = ident.getCType().getType() == CType.T_pint_arr;
@@ -68,7 +67,6 @@ public class Variable extends CParseRule {
                         this.setCType(ident.getCType());
                     }
             );
-            System.out.print(") ");
         }
         this.setConstant(ident.isConstant());
     }

@@ -30,7 +30,6 @@ public class FactorAmp extends CParseRule {
     }
 
     public void semanticCheck(CParseContext pcx) throws FatalErrorException {
-        System.out.print("AMP ");
         if (numberPrimary != null) {
             if (numberPrimary instanceof Primary) {
                 if (((Primary) numberPrimary).hasMultPrimary) {

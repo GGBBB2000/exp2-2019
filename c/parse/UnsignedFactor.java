@@ -57,19 +57,11 @@ public class UnsignedFactor extends CParseRule {
     }
 
     public void semanticCheck(CParseContext pcx) throws FatalErrorException {
-        System.out.print("UnsignedFactor( ");
-        if (hasPar) {
-            System.out.print("LPAR ");
-        }
         if (unsignedFactor != null) {
             unsignedFactor.semanticCheck(pcx);
             setCType(unsignedFactor.getCType());        // number factorAmp expressionの型をそのままコピー
             setConstant(unsignedFactor.isConstant());    // factor は常に定数
         }
-        if (hasPar) {
-            System.out.print("RPAR ");
-        }
-        System.out.print(")");
     }
 
     public void codeGen(CParseContext pcx) throws FatalErrorException {

@@ -34,11 +34,9 @@ public class Primary extends CParseRule {
     @Override
     public void semanticCheck(CParseContext pcx) throws FatalErrorException {
         if (multVariable != null) {
-            System.out.print("Primary( ");
             multVariable.semanticCheck(pcx);
             this.setCType(multVariable.getCType());
-            this.setConstant(multVariable.isConstant());
-            System.out.print(")");
+            this.setConstant(false);
         }
     }
 
