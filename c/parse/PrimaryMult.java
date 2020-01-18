@@ -41,7 +41,7 @@ public class PrimaryMult extends CParseRule {
             } else if (type == CType.T_pint) {
                 this.setCType(CType.getCType(CType.T_int));
             }
-            this.setConstant(false);
+            this.setConstant(variable.isConstant());
         }
     }
 

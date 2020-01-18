@@ -69,8 +69,8 @@ public class Variable extends CParseRule {
                     }
             );
             System.out.print(") ");
+            this.setConstant(ident.isConstant());
         }
-        this.setConstant(false);
     }
 
     @Override
