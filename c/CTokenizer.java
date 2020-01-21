@@ -5,6 +5,7 @@ import lang.Tokenizer;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.PrintStream;
+import java.util.Optional;
 
 public class CTokenizer extends Tokenizer<CToken, CParseContext> {
     @SuppressWarnings("unused")
@@ -302,7 +303,10 @@ public class CTokenizer extends Tokenizer<CToken, CParseContext> {
                         text.append(ch);
                     } else {
                         backChar(ch);
-                        tk = new CToken(CToken.TK_IDENT, lineNo, startCol, text.toString());
+                        final var txt = text.toString();
+                        var tokenType = Optional.ofNullable((Integer) rule.get(txt))
+                                .orElse(CToken.TK_IDENT);
+                        tk = new CToken(tokenType, lineNo, startCol, txt);
                         accept = true;
                         break;
                     }
@@ -313,6 +317,10 @@ public class CTokenizer extends Tokenizer<CToken, CParseContext> {
                     break;
                 case 20:
                     tk = new CToken(CToken.TK_SEMI, lineNo, startCol, ";");
+                    accept = true;
+                    break;
+                case 21:
+                    tk = new CToken(CToken.TK_COMMA, lineNo, startCol, ",");
                     accept = true;
                     break;
             }

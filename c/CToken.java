@@ -16,6 +16,9 @@ public class CToken extends SimpleToken {
     public static final int TK_IDENT = 12;      // 変数
     public static final int TK_ASSIGN = 13;     // =
     public static final int TK_SEMI = 14;       // ;
+    public static final int TK_INT = 15;        // INT
+    public static final int TK_CONST = 16;      // CONST
+    public static final int TK_COMMA = 17;      // ,
 
     public CToken(int type, int lineNo, int colNo, String s) {
         super(type, lineNo, colNo, s);

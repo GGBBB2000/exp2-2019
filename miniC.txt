@@ -30,4 +30,3 @@ variable := ident [ array ]
 array := LBRA expression RBRA
 ident := IDENT
 number ::= NUM
-
