@@ -6,16 +6,26 @@ import lang.c.CParseRule;
 import lang.c.CToken;
 
 public class Declaration extends CParseRule {
-
+    CParseRule decl;
     public static boolean isFirst(CToken token) {
         return IntDecl.isFirst(token) || ConstDecl.isFirst(token);
     }
 
-    ;
+    public Declaration(CParseContext pcx) {
+    }
 
     @Override
     public void parse(CParseContext pcx) throws FatalErrorException {
-
+        final var tokenizer = pcx.getTokenizer();
+        final var token = tokenizer.getCurrentToken(pcx);
+        if (token.getType() == CToken.TK_INT) {
+            decl = new IntDecl(pcx);
+        } else if (token.getType() == CToken.TK_CONST) {
+            decl = new ConstDecl(pcx);
+        } else {
+            pcx.fatalError(token.toExplainString() + "int/constが予測されます");
+        }
+        decl.parse(pcx);
     }
 
     @Override

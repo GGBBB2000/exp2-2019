@@ -1,1 +1,1 @@
-const int huga
+int e=3;

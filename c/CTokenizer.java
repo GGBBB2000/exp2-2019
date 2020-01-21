@@ -144,6 +144,10 @@ public class CTokenizer extends Tokenizer<CToken, CParseContext> {
                         startCol = colNo - 1;
                         text.append(ch);
                         state = 20;
+                    } else if (ch == ',') {
+                        startCol = colNo - 1;
+                        text.append(ch);
+                        state = 21;
                     } else {            // ヘンな文字を読んだ
                         startCol = colNo - 1;
                         text.append(ch);
@@ -166,8 +170,7 @@ public class CTokenizer extends Tokenizer<CToken, CParseContext> {
                     } else {
                         // 数の終わり
                         try {
-                            if (Math.
-                                    abs(Integer.decode(text.toString())) > 0xFFFF) {
+                            if (Math.abs(Integer.decode(text.toString())) > 0xFFFF) {
                                 tk = new CToken(CToken.TK_ILL, lineNo, startCol, text.toString());
                             } else {
                                 backChar(ch);

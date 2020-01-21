@@ -11,6 +11,7 @@ import java.util.ArrayList;
 
 public class Program extends CParseRule {
     // program ::= expression EOF
+    private ArrayList<CParseRule> declaration = new ArrayList<>();
     private ArrayList<CParseRule> statement = new ArrayList<>();
     public Program(CParseContext pcx) {
     }
@@ -23,6 +24,13 @@ public class Program extends CParseRule {
         // ここにやってくるときは、必ずisFirst()が満たされている
         final var tokenizer = pcx.getTokenizer();
         var token = tokenizer.getCurrentToken(pcx);
+        while (Declaration.isFirst(token)) {
+            var tmp_decl = new Declaration(pcx);
+            tmp_decl.parse(pcx);
+            declaration.add(tmp_decl);
+            token = tokenizer.getCurrentToken(pcx);
+        }
+
         while (Statement.isFirst(token)) {
             var tmp_statement = new Statement(pcx);
             tmp_statement.parse(pcx);
