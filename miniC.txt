@@ -1,7 +1,15 @@
-miniC ver05
-program ::= {statement} EOF
+miniC ver06
+program ::= {declaration}{statement} EOF
+
+declaration ::= intDecl | constDecl
+intDecl ::= INT declItem {COMMA declItem} SEMI
+constDecl ::= CONST INT constItem {COMMA constItem} SEMI
+constItem ::=  [MULT] IDENT ASSIGN [AMP] NUM
+declItem ::= [MULT] IDENT [LBRA NUM RBRA]
+
 statement ::= statementAssign
 statementAssign := primary ASSIGN expression SEMI //ASSIGN->"=" SEMI->";"
+
 expression ::= term { expressionAdd | expressionSub }
 expressionAdd ::= PLUS term
 expressionSub ::= MINUS term
