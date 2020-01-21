@@ -16,7 +16,8 @@ public class Program extends CParseRule {
     }
 
     public static boolean isFirst(CToken tk) {
-        return Statement.isFirst(tk);
+
+        return Statement.isFirst(tk) || Declaration.isFirst(tk);
     }
     public void parse(CParseContext pcx) throws FatalErrorException {
         // ここにやってくるときは、必ずisFirst()が満たされている
