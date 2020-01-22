@@ -148,6 +148,18 @@ public class CTokenizer extends Tokenizer<CToken, CParseContext> {
                         startCol = colNo - 1;
                         text.append(ch);
                         state = 21;
+                    } else if (ch == '<') {
+                        startCol = colNo - 1;
+                        text.append(ch);
+                        state = 22;
+                    } else if (ch == '>') {
+                        startCol = colNo - 1;
+                        text.append(ch);
+                        state = 23;
+                    } else if (ch == '!') {
+                        startCol = colNo - 1;
+                        text.append(ch);
+                        state = 24;
                     } else {            // ヘンな文字を読んだ
                         startCol = colNo - 1;
                         text.append(ch);
@@ -315,7 +327,13 @@ public class CTokenizer extends Tokenizer<CToken, CParseContext> {
                     }
                     break;
                 case 19: // = を読んだ
+                    ch = readChar();
                     tk = new CToken(CToken.TK_ASSIGN, lineNo, startCol, "=");
+                    if (ch == '=') {
+                        tk = new CToken(CToken.TK_EQ, lineNo, startCol, "==");
+                    } else {
+                        backChar(ch);
+                    }
                     accept = true;
                     break;
                 case 20:
@@ -325,6 +343,36 @@ public class CTokenizer extends Tokenizer<CToken, CParseContext> {
                 case 21:
                     tk = new CToken(CToken.TK_COMMA, lineNo, startCol, ",");
                     accept = true;
+                    break;
+                case 22:
+                    ch = readChar();
+                    tk = new CToken(CToken.TK_LT, lineNo, startCol, "<");
+                    if (ch == '=') {
+                        tk = new CToken(CToken.TK_LE, lineNo, startCol, "<=");
+                    } else {
+                        backChar(ch);
+                    }
+                    accept = true;
+                    break;
+                case 23:
+                    ch = readChar();
+                    tk = new CToken(CToken.TK_GT, lineNo, startCol, ">");
+                    if (ch == '=') {
+                        tk = new CToken(CToken.TK_GE, lineNo, startCol, ">=");
+                    } else {
+                        backChar(ch);
+                    }
+                    accept = true;
+                    break;
+                case 24:
+                    ch = readChar();
+                    if (ch == '=') {
+                        tk = new CToken(CToken.TK_NE, lineNo, startCol, "!=");
+                        accept = true;
+                    } else {
+                        text.append(ch);
+                        state = 2;
+                    }
                     break;
             }
             //System.out.println(state);
