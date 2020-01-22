@@ -17,7 +17,6 @@ public class CSymbolTableEntry extends SymbolTableEntry {
         this.address = address;
     }
 
-
     @Override
     public String toExplainString() {
         return type.toString() + "," + size + (constp ? "定数" : "変数");

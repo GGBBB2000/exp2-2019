@@ -22,9 +22,13 @@ public class Ident extends CParseRule {
     public void parse(CParseContext pcx) throws FatalErrorException {
         final var tokenizer = pcx.getTokenizer();
         final var token = tokenizer.getCurrentToken(pcx);
+        final var table = pcx.getTable();
         if (token.getType() != CToken.TK_IDENT) {
             System.out.println("\n" + token.getType());
             pcx.fatalError("識別子がありません");
+        }
+        if (table.globalSearch(token.getText()) == null) {
+            pcx.fatalError(token.toExplainString() + "未定義の変数です");
         }
         identifier = token;
         tokenizer.getNextToken(pcx);

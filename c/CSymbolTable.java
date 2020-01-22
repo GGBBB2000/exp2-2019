@@ -16,6 +16,18 @@ public class CSymbolTable {
         }
     }
 
-    private OneSymbolTable global;
+    private OneSymbolTable global = new OneSymbolTable();
     private OneSymbolTable local;
+
+    public void setGlobalEntry(String name, CSymbolTableEntry e) {
+        global.register(name, e);
+    }
+
+    public CSymbolTableEntry globalSearch(String name) {
+        return global.get(name);
+    }
+
+    public void printGlobal() {
+        global.show();
+    }
 }

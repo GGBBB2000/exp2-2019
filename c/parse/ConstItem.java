@@ -1,15 +1,13 @@
 package lang.c.parse;
 
 import lang.FatalErrorException;
-import lang.c.CParseContext;
-import lang.c.CParseRule;
-import lang.c.CToken;
+import lang.c.*;
 
 public class ConstItem extends CParseRule {
     private boolean hasMul = false;
     private boolean hasAmp = false;
-    private CParseRule ident;
-    private CParseRule num;
+    private CToken ident;
+    private CToken num;
 
     public ConstItem(CParseContext pcx) {
 
@@ -23,6 +21,7 @@ public class ConstItem extends CParseRule {
 
     @Override
     public void parse(CParseContext pcx) throws FatalErrorException {
+        var table = pcx.getTable();
         var tokenizer = pcx.getTokenizer();
         var token = tokenizer.getCurrentToken(pcx);
 
@@ -32,22 +31,34 @@ public class ConstItem extends CParseRule {
         }
 
         if (token.getType() == CToken.TK_IDENT) {
-            ident = new Ident(pcx);
+            ident = token;
         } else {
             pcx.fatalError(token.toExplainString() + "識別子が有りません");
         }
-        ident.parse(pcx);
-        token = tokenizer.getCurrentToken(pcx);
+
+        final var tokenText = token.getText();
+        if (table.globalSearch(tokenText) != null) {
+            pcx.fatalError(tokenText + "は既に定義されています");
+        }
+
+        token = tokenizer.getNextToken(pcx);
         if (token.getType() != CToken.TK_ASSIGN) {
             pcx.fatalError(token.toExplainString() + "=が予測されます");
         }
         token = tokenizer.getNextToken(pcx);
         if (token.getType() == CToken.TK_AMP) {
             hasAmp = true;
-            tokenizer.getNextToken(pcx);
+            token = tokenizer.getNextToken(pcx);
         }
-        num = new Number(pcx);
-        num.parse(pcx);
+        if (token.getType() != CToken.TK_NUM) {
+            pcx.fatalError(token.toExplainString() + "=の後には数値が必要です");
+        }
+        num = token;
+        tokenizer.getNextToken(pcx);
+
+        var cType = hasMul ? CType.getCType(CType.T_pint) : CType.getCType(CType.T_int);
+        final var entry = new CSymbolTableEntry(cType, 1, true, true, 0);
+        table.setGlobalEntry(tokenText, entry);
     }
 
     @Override
