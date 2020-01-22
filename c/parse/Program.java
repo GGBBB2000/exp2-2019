@@ -61,6 +61,13 @@ public class Program extends CParseRule {
         o.println("\t. = 0x100");
         o.println("\tJMP\t__START\t; ProgramNode: 最初の実行文へ");
         // ここには将来、宣言に対するコード生成が必要
+        declaration.forEach(decl -> {
+            try {
+                decl.codeGen(pcx);
+            } catch (FatalErrorException e) {
+                e.printStackTrace();
+            }
+        });
         if (statement != null) {
             o.println("__START:");
             o.println("\tMOV\t#0x1000, R6\t; ProgramNode: 計算用スタック初期化");

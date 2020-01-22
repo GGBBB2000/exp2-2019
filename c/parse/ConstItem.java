@@ -3,6 +3,8 @@ package lang.c.parse;
 import lang.FatalErrorException;
 import lang.c.*;
 
+import java.io.PrintStream;
+
 public class ConstItem extends CParseRule {
     private boolean hasMul = false;
     private boolean hasAmp = false;
@@ -68,6 +70,15 @@ public class ConstItem extends CParseRule {
 
     @Override
     public void codeGen(CParseContext pcx) throws FatalErrorException {
-
+        PrintStream o = pcx.getIOContext().getOutStream();
+        if (ident != null) {
+            o.println(";;; constItem starts");
+            final var label = ident.getText();
+            final var value = num.getIntValue();
+            if (num != null) {
+                o.printf("%s: .WORD %d\n", label, value);
+            }
+            o.println(";;; constItem completes");
+        }
     }
 }

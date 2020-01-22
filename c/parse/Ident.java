@@ -23,7 +23,6 @@ public class Ident extends CParseRule {
         final var token = tokenizer.getCurrentToken(pcx);
         final var table = pcx.getTable();
         if (token.getType() != CToken.TK_IDENT) {
-            System.out.println("\n" + token.getType());
             pcx.fatalError("識別子がありません");
         }
         if (table.globalSearch(token.getText()) == null) {

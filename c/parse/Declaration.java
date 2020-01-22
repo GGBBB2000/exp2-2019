@@ -35,6 +35,11 @@ public class Declaration extends CParseRule {
 
     @Override
     public void codeGen(CParseContext pcx) throws FatalErrorException {
-
+        if (decl != null) {
+            var o = pcx.getIOContext().getOutStream();
+            o.println(";;; Declaration starts");
+            decl.codeGen(pcx);
+            o.println(";;; Declaration completes");
+        }
     }
 }

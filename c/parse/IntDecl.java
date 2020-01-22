@@ -5,6 +5,7 @@ import lang.c.CParseContext;
 import lang.c.CParseRule;
 import lang.c.CToken;
 
+import java.io.PrintStream;
 import java.util.ArrayList;
 
 public class IntDecl extends CParseRule {
@@ -46,6 +47,16 @@ public class IntDecl extends CParseRule {
 
     @Override
     public void codeGen(CParseContext pcx) throws FatalErrorException {
-
+        PrintStream o = pcx.getIOContext().getOutStream();
+        declItem.stream()
+                .forEach(item -> {
+                    o.println(";;; IntDecl starts");
+                    try {
+                        item.codeGen(pcx);
+                    } catch (FatalErrorException e) {
+                        e.printStackTrace();
+                    }
+                    o.println(";;; IntDecl completes");
+                });
     }
 }

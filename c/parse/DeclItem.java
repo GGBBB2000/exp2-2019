@@ -3,6 +3,8 @@ package lang.c.parse;
 import lang.FatalErrorException;
 import lang.c.*;
 
+import java.io.PrintStream;
+
 public class DeclItem extends CParseRule {
 
     CToken ident, num;
@@ -40,6 +42,7 @@ public class DeclItem extends CParseRule {
             if (token.getType() != CToken.TK_NUM) {
                 pcx.fatalError(token.toExplainString() + "Numberがありません");
             }
+            num = token;
             variableSize = token.getIntValue();
             token = tokenizer.getNextToken(pcx);
             if (token.getType() != CToken.TK_RBRA) {
@@ -67,6 +70,17 @@ public class DeclItem extends CParseRule {
 
     @Override
     public void codeGen(CParseContext pcx) throws FatalErrorException {
-
+        PrintStream o = pcx.getIOContext().getOutStream();
+        if (ident != null) {
+            o.println(";;; DeclItem starts");
+            final var label = ident.getText();
+            if (num != null) {
+                final var size = num.getIntValue();
+                o.printf("%s: .BLKW %d\n", label, size);
+            } else {
+                o.printf("%s: .WORD %d\n", label, 0);
+            }
+            o.println(";;; DeclItem completes");
+        }
     }
 }
