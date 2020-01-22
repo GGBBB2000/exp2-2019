@@ -6,13 +6,15 @@ public class CType {
     public static final int T_pint = 2;        // int*
     public static final int T_int_arr = 3;        // intの配列
     public static final int T_pint_arr = 4;        // int*の配列
+    public static final int T_bool = 5;            // bool
 
     private static CType[] typeArray = {
             new CType(T_err, "error"),
             new CType(T_int, "int"),
             new CType(T_pint, "int*"),
             new CType(T_int_arr, "int array"),
-            new CType(T_pint_arr, "int* array")
+            new CType(T_pint_arr, "int* array"),
+            new CType(T_bool, "bool")
     };
 
     private int type;
