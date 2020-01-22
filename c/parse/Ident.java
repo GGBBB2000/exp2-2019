@@ -4,7 +4,6 @@ import lang.FatalErrorException;
 import lang.c.CParseContext;
 import lang.c.CParseRule;
 import lang.c.CToken;
-import lang.c.CType;
 
 import java.io.PrintStream;
 
@@ -37,8 +36,11 @@ public class Ident extends CParseRule {
     @Override
     public void semanticCheck(CParseContext pcx) throws FatalErrorException {
         if (identifier != null) {
-            this.setCType(CType.getCType(CType.T_int));
-            this.setConstant(true);
+            final var table = pcx.getTable();
+            final var entry = table.globalSearch(identifier.getText());
+
+            this.setCType(entry.getType());
+            this.setConstant(entry.isConstant());
         }
     }
 

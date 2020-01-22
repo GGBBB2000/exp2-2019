@@ -21,4 +21,12 @@ public class CSymbolTableEntry extends SymbolTableEntry {
     public String toExplainString() {
         return type.toString() + "," + size + (constp ? "定数" : "変数");
     }
+
+    public boolean isConstant() {
+        return constp;
+    }
+
+    public CType getType() {
+        return type;
+    }
 }
