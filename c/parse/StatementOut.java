@@ -5,6 +5,8 @@ import lang.c.CParseContext;
 import lang.c.CParseRule;
 import lang.c.CToken;
 
+import java.io.PrintStream;
+
 public class StatementOut extends CParseRule {
     private CParseRule expression;
     public StatementOut(CParseContext pcx) {
@@ -36,6 +38,11 @@ public class StatementOut extends CParseRule {
 
     @Override
     public void codeGen(CParseContext pcx) throws FatalErrorException {
-
+        PrintStream o = pcx.getIOContext().getOutStream();
+        if (expression != null) {
+            expression.codeGen(pcx);
+            o.println("\tMOV\t#FFE0, R3\t; StatementIn:");
+            o.println("\tMOV\t-(R6), (R3)\t; StatementIn: Expressionの値を書き込み");
+        }
     }
 }

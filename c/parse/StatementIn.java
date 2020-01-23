@@ -5,8 +5,10 @@ import lang.c.CParseContext;
 import lang.c.CParseRule;
 import lang.c.CToken;
 
+import java.io.PrintStream;
+
 public class StatementIn extends CParseRule {
-    private CParseRule expression;
+    private CParseRule primary;
     public StatementIn(CParseContext pcx) {
     }
 
@@ -18,8 +20,8 @@ public class StatementIn extends CParseRule {
     public void parse(CParseContext pcx) throws FatalErrorException {
         final var tokenizer = pcx.getTokenizer();
         tokenizer.getNextToken(pcx);
-        expression = new Expression(pcx);
-        expression.parse(pcx);
+        primary = new Primary(pcx);
+        primary.parse(pcx);
         var token = tokenizer.getCurrentToken(pcx);
         if (token.getType() != CToken.TK_SEMI) {
             pcx.fatalError(token.toExplainString() + ";がありません");
@@ -29,13 +31,23 @@ public class StatementIn extends CParseRule {
 
     @Override
     public void semanticCheck(CParseContext pcx) throws FatalErrorException {
-        if (expression != null) {
-            expression.semanticCheck(pcx);
+        if (primary != null) {
+            primary.semanticCheck(pcx);
+            if (primary.isConstant()) {
+                pcx.fatalError("定数に値を入力することはできません");
+            }
         }
     }
 
     @Override
     public void codeGen(CParseContext pcx) throws FatalErrorException {
-
+        PrintStream o = pcx.getIOContext().getOutStream();
+        if (primary != null) {
+            primary.codeGen(pcx);
+            o.println("\tMOV\t-(R6), R0; StatementIn: 変数のアドレスをスタックからpop");
+            o.println("\tMOV\t#FFE0, R3\t; StatementIn:");
+            o.println("\tMOV\t(R3), (R0)+\t; StatementIn: Primaryの値を変数に書き込み");
+            o.println("\tMOV\tR0, (R6)+; StatementIn: 変数のアドレスをスタックへpush");
+        }
     }
 }

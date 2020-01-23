@@ -83,7 +83,7 @@ public class ConditionExpression extends CParseRule {
         }
         status.ifPresent(IsTrue -> {
             if (IsTrue) {
-                o.println("\\tMOV\\t#0x0001, (R6)+\\t; Condition: true(1)を積む");
+                o.println("\tMOV\\t#0x0001, (R6)+\t; Condition: true(1)を積む");
             } else {
                 o.println("\tMOV\t#0x0000, (R6)+\t; Condition: false(0)を積む");
             }

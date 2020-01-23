@@ -1,19 +1,30 @@
 int a;
-
-if (true) {
-    a = 1;
-} else {
-    a = 2;
-    while (false) {
-        if (false)
-            output 1;
-        else
-            input 2;
-        do {
-            output 0;
-            input 1;
-            output 0;
-            input 1;
-        } while (false);
-    }
+const int b=0;
+/*
+if (true) {     // true を 3 に変えてエラーになることを確認
+   a=1;
+} else {        // { を消したらエラーになることを確認
+   a=2;
 }
+
+if (false) {    // ( と ) をそれぞれ単独で消したときエラーになることを確認
+   a=3;
+}
+*/
+if (a == 3) {
+   a=0;
+} else if (a < 4) {     // キーワードelseifを導入した人は、そのように直すこと
+   a=1;
+} else {
+   a=2;
+}
+/*
+//else {        // コメントを外して、elseが複数あるのは文法エラーになることを確認
+//   a=3;
+//}
+
+while (true) {          // whileのつづりを間違えてみてエラーになることを確認
+   input a;             // ; を消したときにエラーになることを確認
+//   input 3;           // コメントを外したら文法エラーになることを確認
+//   input b;           // コメントを外したら意味解析エラーになることを確認（定数には読み込めない）
+}*/

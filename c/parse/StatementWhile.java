@@ -5,6 +5,8 @@ import lang.c.CParseContext;
 import lang.c.CParseRule;
 import lang.c.CToken;
 
+import java.io.PrintStream;
+
 public class StatementWhile extends CParseRule {
     CParseRule condition, statement;
     public StatementWhile(CParseContext pcx) {
@@ -47,6 +49,20 @@ public class StatementWhile extends CParseRule {
 
     @Override
     public void codeGen(CParseContext pcx) throws FatalErrorException {
-
+        PrintStream o = pcx.getIOContext().getOutStream();
+        final var seq = pcx.getSeqId();
+        o.println(";;; StatementWhile Starts");
+        o.println("while" + seq + ":\t;StatementWhile: ラベル生成");
+        if (condition != null) {
+            condition.codeGen(pcx);
+        }
+        o.println("\tMOV\t-(R6), R0\t;StatementWhile: スタックからconditionの結果を持ってくる");
+        o.println("BRZ whileEnd" + seq + "\t;;; StatementWhile:");
+        if (statement != null) {
+            statement.codeGen(pcx);
+        }
+        o.println("\tJMP while" + seq + ":\t;StatementWhile:");
+        o.println("whileEnd" + seq + ":\t;StatementWhile: ラベル生成");
+        o.println(";;; StatementWhile Completes");
     }
 }

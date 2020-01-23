@@ -45,6 +45,12 @@ public class StatementBlock extends CParseRule {
 
     @Override
     public void codeGen(CParseContext pcx) throws FatalErrorException {
-
+        statementList.forEach(statement -> {
+            try {
+                statement.codeGen(pcx);
+            } catch (FatalErrorException e) {
+                e.printStackTrace();
+            }
+        });
     }
 }
