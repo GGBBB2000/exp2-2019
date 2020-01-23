@@ -46,11 +46,8 @@ public class FactorAmp extends CParseRule {
                 case CType.T_int_arr:
                     res = CType.T_pint_arr;
                     break;
-                case CType.T_pint:
-                    res = CType.T_pint;
-                    break;
                 default:
-                    pcx.fatalError(type + "不正な型です");
+                    pcx.fatalError(type + "ポインタ型に&は付けられません");
             }
             this.setCType(CType.getCType(res));
             this.setConstant(numberPrimary.isConstant());    // number は常に定数
