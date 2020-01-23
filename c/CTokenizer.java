@@ -160,6 +160,14 @@ public class CTokenizer extends Tokenizer<CToken, CParseContext> {
                         startCol = colNo - 1;
                         text.append(ch);
                         state = 24;
+                    } else if (ch == '{') {
+                        startCol = colNo - 1;
+                        text.append(ch);
+                        state = 25;
+                    } else if (ch == '}') {
+                        startCol = colNo - 1;
+                        text.append(ch);
+                        state = 26;
                     } else {            // ヘンな文字を読んだ
                         startCol = colNo - 1;
                         text.append(ch);
@@ -216,11 +224,7 @@ public class CTokenizer extends Tokenizer<CToken, CParseContext> {
                     } else if (ch == (char) -1) {
                         backChar(ch);
                         state = 0;
-                    } /*else if (Character.isDigit(ch)
-                            || (ch >= 'a' && ch <= 'z') || (ch >= 'A' && ch <= 'Z')) {
-                        backChar(ch);
-                        tk = new CToken(CToken.TK_DIV, lineNo, startCol, "/");
-                    } */ else {
+                    } else {
                         //text.append(ch);
                         accept = true;
                         backChar(ch);
@@ -374,6 +378,15 @@ public class CTokenizer extends Tokenizer<CToken, CParseContext> {
                         state = 2;
                     }
                     break;
+                case 25:
+                    tk = new CToken(CToken.TK_LCUR, lineNo, startCol, "{");
+                    accept = true;
+                    break;
+                case 26:
+                    tk = new CToken(CToken.TK_RCUR, lineNo, startCol, "}");
+                    accept = true;
+                    break;
+
             }
             //System.out.println(state);
         }

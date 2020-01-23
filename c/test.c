@@ -1,1 +1,8 @@
-1 != 0
+while
+()
+{}
+do
+if
+else
+input
+output
