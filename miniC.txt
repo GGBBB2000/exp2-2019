@@ -1,4 +1,4 @@
-miniC ver06
+miniC ver08
 program ::= {declaration}{statement} EOF
 
 declaration ::= intDecl | constDecl
@@ -7,8 +7,14 @@ constDecl ::= CONST INT constItem {COMMA constItem} SEMI
 constItem ::=  [MULT] IDENT ASSIGN [AMP] NUM
 declItem ::= [MULT] IDENT [LBRA NUM RBRA]
 
-statement ::= statementAssign
-statementAssign := primary ASSIGN expression SEMI //ASSIGN->"=" SEMI->";"
+statement ::= statementAssign | statementIf | statementWhile | statementBlock | statementOut | statementIN
+
+statementOUT ::= OUTPUT expression;
+statementIN ::= INPUT expression;
+statementBlock ::= LBRA {statement} RBRA                                //LBRA -> "{" RBRA->"}"
+statementWhile ::= WHILE LPAR condition RPAR statement
+statementAssign ::= primary ASSIGN expression SEMI                      //ASSIGN->"=" SEMI->";"
+statementIf :: = IF LPAR condition RPAR statement [ELSE statement ]
 
 expression ::= term { expressionAdd | expressionSub }
 expressionAdd ::= PLUS term
