@@ -6,12 +6,32 @@ import lang.c.CParseRule;
 import lang.c.CToken;
 
 public class StatementWhile extends CParseRule {
+    CParseRule condition, statement;
+    public StatementWhile(CParseContext pcx) {
+    }
+
     public static boolean isFirst(CToken token) {
         return token.getType() == CToken.TK_WHILE;
     }
 
     @Override
     public void parse(CParseContext pcx) throws FatalErrorException {
+        final var tokenizer = pcx.getTokenizer();
+        var token = tokenizer.getNextToken(pcx);
+
+        if (token.getType() != CToken.TK_LPAR) {
+            pcx.fatalError(token.toExplainString() + "予期せぬトークンです");
+        }
+        tokenizer.getNextToken(pcx);
+        condition = new ConditionExpression(pcx);
+        condition.parse(pcx);
+        token = tokenizer.getCurrentToken(pcx);
+        if (token.getType() != CToken.TK_RPAR) {
+            pcx.fatalError(token.toExplainString() + "()が閉じていません");
+        }
+        tokenizer.getNextToken(pcx);
+        statement = new Statement(pcx);
+        statement.parse(pcx);
 
     }
 

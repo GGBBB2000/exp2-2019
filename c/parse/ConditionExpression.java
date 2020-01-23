@@ -60,6 +60,7 @@ public class ConditionExpression extends CParseRule {
             } else {
                 status = Optional.of(false);
             }
+            tokenizer.getNextToken(pcx);
         }
     }
 
