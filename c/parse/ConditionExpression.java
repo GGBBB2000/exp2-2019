@@ -6,6 +6,7 @@ import lang.c.CParseRule;
 import lang.c.CToken;
 import lang.c.CType;
 
+import java.io.PrintStream;
 import java.util.Optional;
 
 public class ConditionExpression extends CParseRule {
@@ -67,12 +68,26 @@ public class ConditionExpression extends CParseRule {
         if (condition != null) {
             condition.semanticCheck(pcx);
             this.setCType(condition.getCType());
+            this.setConstant(condition.isConstant());
+            assert condition.isConstant() : "conditionは絶対に定数";
         }
     }
 
     @Override
     public void codeGen(CParseContext pcx) throws FatalErrorException {
-
+        PrintStream o = pcx.getIOContext().getOutStream();
+        o.println(";;; condition starts");
+        if (condition != null) {
+            condition.codeGen(pcx);
+        }
+        status.ifPresent(IsTrue -> {
+            if (IsTrue) {
+                o.println("\\tMOV\\t#0x0001, (R6)+\\t; Condition: true(1)を積む");
+            } else {
+                o.println("\tMOV\t#0x0000, (R6)+\t; Condition: false(0)を積む");
+            }
+        });
+        o.println(";;; condition completes");
     }
 }
 
@@ -114,11 +129,26 @@ class ConditionLT extends CParseRule {
             }
         }
         this.setCType(CType.getCType(CType.T_bool));
+        this.setConstant(true);
     }
 
     @Override
     public void codeGen(CParseContext pcx) throws FatalErrorException {
-
+        PrintStream o = pcx.getIOContext().getOutStream();
+        o.println(";;; condition < (compare) starts");
+        if (left != null && right != null) {
+            left.codeGen(pcx);
+            right.codeGen(pcx);
+            int seq = pcx.getSeqId();
+            o.println("\tMOV\t-(R6), R0\t; ConditionLT: 2数を取り出して, 比べる");
+            o.println("\tMOV\t-(R6), R1\t; ConditionLT:");
+            o.println("\tMOV\t#0x0001, R2\t; ConditionLT: set true");
+            o.println("\tCMP\tR0, R1\t; ConditionLT: R1 < R0 = R1-R0 < 0");
+            o.println("\tBRN\tLT" + seq + " ; ConditionLT:");
+            o.println("\tCLR\tR2\t\t; ConditionLT: set false");
+            o.println("LT" + seq + ":\tMOV\tR2, (R6)+\t; ConditionLT:");
+        }
+        o.println(";;; condition < (compare) completes");
     }
 }
 
@@ -160,11 +190,27 @@ class ConditionLE extends CParseRule {
             }
         }
         this.setCType(CType.getCType(CType.T_bool));
+        this.setConstant(true);
     }
 
     @Override
     public void codeGen(CParseContext pcx) throws FatalErrorException {
-
+        PrintStream o = pcx.getIOContext().getOutStream();
+        o.println(";;; condition <= (compare) starts");
+        if (left != null && right != null) {
+            left.codeGen(pcx);
+            right.codeGen(pcx);
+            int seq = pcx.getSeqId();
+            o.println("\tMOV\t-(R6), R0\t; ConditionLE: 2数を取り出して, 比べる");
+            o.println("\tMOV\t-(R6), R1\t; ConditionLE:");
+            o.println("\tMOV\t#0x0001, R2\t; ConditionLE: set true");
+            o.println("\tCMP\tR0, R1\t; ConditionLE: R1 <= R0 = R1-R0 <= 0");
+            o.println("\tBRZ\tLE" + seq + " ; ConditionLE:");
+            o.println("\tBRN\tLE" + seq + " ; ConditionLE:");
+            o.println("\tCLR\tR2\t\t; ConditionLE: set false");
+            o.println("LE" + seq + ":\tMOV\tR2, (R6)+\t; ConditionLE:");
+        }
+        o.println(";;; condition <= (compare) completes");
     }
 }
 
@@ -206,11 +252,26 @@ class ConditionGT extends CParseRule {
             }
         }
         this.setCType(CType.getCType(CType.T_bool));
+        this.setConstant(true);
     }
 
     @Override
     public void codeGen(CParseContext pcx) throws FatalErrorException {
-
+        PrintStream o = pcx.getIOContext().getOutStream();
+        o.println(";;; condition >(compare) starts");
+        if (left != null && right != null) {
+            left.codeGen(pcx);
+            right.codeGen(pcx);
+            int seq = pcx.getSeqId();
+            o.println("\tMOV\t-(R6), R0\t; ConditionGT: 2数を取り出して, 比べる");
+            o.println("\tMOV\t-(R6), R1\t; ConditionGT:");
+            o.println("\tMOV\t#0x0001, R2\t; ConditionGT: set true");
+            o.println("\tCMP\tR1, R0\t; ConditionGT: R1 > R0 = R0 - R1 < 0");
+            o.println("\tBRN\tGT" + seq + " ; ConditionGT:");
+            o.println("\tCLR\tR2\t\t; ConditionGT: set false");
+            o.println("GT" + seq + ":\tMOV\tR2, (R6)+\t; ConditionGT:");
+        }
+        o.println(";;; condition > (compare) completes");
     }
 }
 
@@ -252,11 +313,27 @@ class ConditionGE extends CParseRule {
             }
         }
         this.setCType(CType.getCType(CType.T_bool));
+        this.setConstant(true);
     }
 
     @Override
     public void codeGen(CParseContext pcx) throws FatalErrorException {
-
+        PrintStream o = pcx.getIOContext().getOutStream();
+        o.println(";;; condition >= (compare) starts");
+        if (left != null && right != null) {
+            left.codeGen(pcx);
+            right.codeGen(pcx);
+            int seq = pcx.getSeqId();
+            o.println("\tMOV\t-(R6), R0\t; ConditionGE: 2数を取り出して, 比べる");
+            o.println("\tMOV\t-(R6), R1\t; ConditionGE:");
+            o.println("\tMOV\t#0x0001, R2\t; ConditionGE: set true");
+            o.println("\tCMP\tR1, R0\t; ConditionGE: (R1 >= R0) = (R0 - R1 =< 0)");
+            o.println("\tBRZ\tGE" + seq + " ; ConditionGE:");
+            o.println("\tBRN\tGE" + seq + " ; ConditionGE:");
+            o.println("\tCLR\tR2\t\t; ConditionGE: set false");
+            o.println("GE" + seq + ":\tMOV\tR2, (R6)+\t; ConditionGE:");
+        }
+        o.println(";;; condition >= (compare) completes");
     }
 }
 
@@ -298,11 +375,26 @@ class ConditionEQ extends CParseRule {
             }
         }
         this.setCType(CType.getCType(CType.T_bool));
+        this.setConstant(true);
     }
 
     @Override
     public void codeGen(CParseContext pcx) throws FatalErrorException {
-
+        PrintStream o = pcx.getIOContext().getOutStream();
+        o.println(";;; condition ==(compare) starts");
+        if (left != null && right != null) {
+            left.codeGen(pcx);
+            right.codeGen(pcx);
+            int seq = pcx.getSeqId();
+            o.println("\tMOV\t-(R6), R0\t; ConditionEQ: 2数を取り出して, 比べる");
+            o.println("\tMOV\t-(R6), R1\t; ConditionEQ:");
+            o.println("\tMOV\t#0x0001, R2\t; ConditionEQ: set true");
+            o.println("\tCMP\tR1, R0\t; ConditionEQ: R1 == R0 = R0 - R1 = 0");
+            o.println("\tBRZ\tEQ" + seq + " ; ConditionEQ:");
+            o.println("\tCLR\tR2\t\t; ConditionEQ: set false");
+            o.println("EQ" + seq + ":\tMOV\tR2, (R6)+\t; ConditionEQ:");
+        }
+        o.println(";;; condition == (compare) completes");
     }
 }
 
@@ -345,10 +437,25 @@ class ConditionNE extends CParseRule {
             }
         }
         this.setCType(CType.getCType(CType.T_bool));
+        this.setConstant(true);
     }
 
     @Override
     public void codeGen(CParseContext pcx) throws FatalErrorException {
-
+        PrintStream o = pcx.getIOContext().getOutStream();
+        o.println(";;; condition ==(compare) starts");
+        if (left != null && right != null) {
+            left.codeGen(pcx);
+            right.codeGen(pcx);
+            int seq = pcx.getSeqId();
+            o.println("\tMOV\t-(R6), R0\t; ConditionNE: 2数を取り出して, 比べる");
+            o.println("\tMOV\t-(R6), R1\t; ConditionNE:");
+            o.println("\tCLR\tR2\t\t; ConditionNE: set false");
+            o.println("\tCMP\tR1, R0\t; ConditionNE: R1 == R0 = R0 - R1 = 0");
+            o.println("\tBRZ\tNE" + seq + " ; ConditionNE:");
+            o.println("\tMOV\t#0x0001, R2\t; ConditionNE: set true");
+            o.println("NE" + seq + ":\tMOV\tR2, (R6)+\t; ConditionNE:");
+        }
+        o.println(";;; condition == (compare) completes");
     }
 }
