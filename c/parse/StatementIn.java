@@ -29,7 +29,9 @@ public class StatementIn extends CParseRule {
 
     @Override
     public void semanticCheck(CParseContext pcx) throws FatalErrorException {
-
+        if (expression != null) {
+            expression.semanticCheck(pcx);
+        }
     }
 
     @Override

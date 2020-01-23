@@ -34,7 +34,13 @@ public class StatementBlock extends CParseRule {
 
     @Override
     public void semanticCheck(CParseContext pcx) throws FatalErrorException {
-
+        statementList.forEach(statement -> {
+            try {
+                statement.semanticCheck(pcx);
+            } catch (FatalErrorException e) {
+                e.printStackTrace();
+            }
+        });
     }
 
     @Override

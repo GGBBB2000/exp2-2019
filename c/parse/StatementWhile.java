@@ -37,7 +37,12 @@ public class StatementWhile extends CParseRule {
 
     @Override
     public void semanticCheck(CParseContext pcx) throws FatalErrorException {
-
+        if (condition != null) {
+            condition.semanticCheck(pcx);
+        }
+        if (statement != null) {
+            statement.semanticCheck(pcx);
+        }
     }
 
     @Override

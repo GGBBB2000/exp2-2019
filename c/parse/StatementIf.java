@@ -42,7 +42,15 @@ public class StatementIf extends CParseRule {
 
     @Override
     public void semanticCheck(CParseContext pcx) throws FatalErrorException {
-
+        if (condition != null) {
+            condition.semanticCheck(pcx);
+        }
+        if (ifStatement != null) {
+            ifStatement.semanticCheck(pcx);
+        }
+        if (elseStatement != null) {
+            elseStatement.semanticCheck(pcx);
+        }
     }
 
     @Override
