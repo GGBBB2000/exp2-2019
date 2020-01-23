@@ -12,7 +12,13 @@ public class Statement extends CParseRule {
     }
 
     public static boolean isFirst(CToken tk) {
-        return StatementAssign.isFirst(tk);
+        return StatementAssign.isFirst(tk)
+                || StatementBlock.isFirst(tk)
+                || StatementDoWhile.isFirst(tk)
+                || StatementIf.isFirst(tk)
+                || StatementIn.isFirst(tk)
+                || StatementOut.isFirst(tk)
+                || StatementWhile.isFirst(tk);
     }
 
     @Override

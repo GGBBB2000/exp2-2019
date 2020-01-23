@@ -1,8 +1,2 @@
-while
-()
-{}
-do
-if
-else
-input
-output
+do {
+} while (1);
