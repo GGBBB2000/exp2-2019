@@ -41,7 +41,7 @@ public class StatementOut extends CParseRule {
         PrintStream o = pcx.getIOContext().getOutStream();
         if (expression != null) {
             expression.codeGen(pcx);
-            o.println("\tMOV\t#FFE0, R3\t; StatementIn:");
+            o.println("\tMOV\t#0xFFE0, R3\t; StatementIn:");
             o.println("\tMOV\t-(R6), (R3)\t; StatementIn: Expressionの値を書き込み");
         }
     }

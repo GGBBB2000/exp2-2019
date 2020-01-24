@@ -45,9 +45,8 @@ public class StatementIn extends CParseRule {
         if (primary != null) {
             primary.codeGen(pcx);
             o.println("\tMOV\t-(R6), R0; StatementIn: 変数のアドレスをスタックからpop");
-            o.println("\tMOV\t#FFE0, R3\t; StatementIn:");
-            o.println("\tMOV\t(R3), (R0)+\t; StatementIn: Primaryの値を変数に書き込み");
-            o.println("\tMOV\tR0, (R6)+; StatementIn: 変数のアドレスをスタックへpush");
+            o.println("\tMOV\t#0xFFE0, R3\t; StatementIn:");
+            o.println("\tMOV\t(R3), (R0)\t; StatementIn: Primaryの値を変数に書き込み");
         }
     }
 }
