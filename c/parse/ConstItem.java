@@ -65,8 +65,20 @@ public class ConstItem extends CParseRule {
 
     @Override
     public void semanticCheck(CParseContext pcx) throws FatalErrorException {
-
-    }
+        final var table = pcx.getTable();
+        final var entry = table.globalSearch(ident.getText());
+        /*if (entry != null) {
+            pcx.fatalError("変数の二重定義です");
+        }*/
+        final var entryType = entry.getType();
+        var numType = CType.getCType(CType.T_int).getType();
+        if (hasAmp) {
+            numType = CType.getCType(CType.T_pint).getType();
+        }
+        if (numType != entryType.getType()) {
+            pcx.fatalError("宣言した型と値が一致しません");
+        }
+     }
 
     @Override
     public void codeGen(CParseContext pcx) throws FatalErrorException {

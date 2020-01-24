@@ -46,6 +46,13 @@ public class Program extends CParseRule {
     }
 
     public void semanticCheck(CParseContext pcx) throws FatalErrorException {
+        declaration.forEach(d -> {
+            try {
+                d.semanticCheck(pcx);
+            } catch (FatalErrorException e) {
+                e.printStackTrace();
+            }
+        });
         statement.forEach(s -> {
             try {
                 s.semanticCheck(pcx);

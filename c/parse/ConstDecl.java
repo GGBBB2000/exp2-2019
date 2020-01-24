@@ -47,7 +47,13 @@ public class ConstDecl extends CParseRule {
 
     @Override
     public void semanticCheck(CParseContext pcx) throws FatalErrorException {
-
+        constItem.forEach(s -> {
+            try {
+                s.semanticCheck(pcx);
+            } catch (FatalErrorException e) {
+                e.printStackTrace();
+            }
+        });
     }
 
     @Override
