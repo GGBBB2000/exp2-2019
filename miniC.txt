@@ -10,12 +10,13 @@ declItem ::= [MULT] IDENT [LBRA NUM RBRA]
 statement ::= statementAssign | statementIf | statementWhile | statementBlock | statementOut | statementIN | statementDoWhile
 
 statementOUT ::= OUTPUT expression SEMI
-statementIN ::= INPUT expression SEMI
+statementIN ::= INPUT primary SEMI
 statementBlock ::= LCUR {statement} RCUR                                //LCUR -> "{" RCUR->"}"
 statementDoWhile ::= DO statement WHILE LPAR condition RPAR SEMI
 statementWhile ::= WHILE LPAR condition RPAR statement
 statementAssign ::= primary ASSIGN expression SEMI                      //ASSIGN->"=" SEMI->";"
 statementIf :: = IF LPAR condition RPAR statement [ELSE statement ]
+
 
 expression ::= term { expressionAdd | expressionSub }
 expressionAdd ::= PLUS term

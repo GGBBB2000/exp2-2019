@@ -36,7 +36,10 @@ public class StatementIf extends CParseRule {
         ifStatement.parse(pcx);
         token = tokenizer.getCurrentToken(pcx);
         if (token.getType() == CToken.TK_ELSE) {
-            tokenizer.getNextToken(pcx);
+            token = tokenizer.getNextToken(pcx);
+            if (!Statement.isFirst(token)) {
+                pcx.fatalError(token.toExplainString() + "文が必要です");
+            }
             elseStatement = new Statement(pcx);
             elseStatement.parse(pcx);
         }
