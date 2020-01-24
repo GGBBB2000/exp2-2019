@@ -42,7 +42,13 @@ public class IntDecl extends CParseRule {
 
     @Override
     public void semanticCheck(CParseContext pcx) throws FatalErrorException {
-
+        declItem.forEach(s -> {
+            try {
+                s.semanticCheck(pcx);
+            } catch (FatalErrorException e) {
+                e.printStackTrace();
+            }
+        });
     }
 
     @Override

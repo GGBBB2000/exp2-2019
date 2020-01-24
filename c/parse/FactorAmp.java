@@ -21,11 +21,11 @@ public class FactorAmp extends CParseRule {
 
         if (tk.getType() == CToken.TK_NUM) {
             numberPrimary = new Number(pcx);
-        } else if (tk.getType() == CToken.TK_IDENT) {
+        } else /*if (tk.getType() == CToken.TK_IDENT)*/ {
             numberPrimary = new Primary(pcx);
-        } else {
+        } /*else {
             pcx.fatalError(tk.toExplainString() + "&の後ろはNumberかPrimaryです");
-        }
+        }*/
         numberPrimary.parse(pcx);
     }
 
@@ -46,9 +46,9 @@ public class FactorAmp extends CParseRule {
                 case CType.T_int_arr:
                     res = CType.T_pint_arr;
                     break;
-                case CType.T_pint:
+                /*case CType.T_pint:
                     res = CType.T_pint;
-                    break;
+                    break;*/
                 default:
                     pcx.fatalError(type + "不正な型です");
             }

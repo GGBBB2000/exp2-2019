@@ -30,7 +30,9 @@ public class Declaration extends CParseRule {
 
     @Override
     public void semanticCheck(CParseContext pcx) throws FatalErrorException {
-
+        if (decl != null) {
+            decl.semanticCheck(pcx);
+        }
     }
 
     @Override
